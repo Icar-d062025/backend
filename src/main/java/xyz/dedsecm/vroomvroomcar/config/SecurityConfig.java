@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +23,7 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import xyz.dedsecm.vroomvroomcar.exception.JwtKeyGenerationException;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -34,16 +37,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
+        http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/login").permitAll()
                         .requestMatchers("/api/users").permitAll()
                         .requestMatchers("/h2-console/**").permitAll() // Si vous utilisez la console H2
-                        .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN") // Remarque: utilisation de hasAuthority au lieu de hasRole
+                        .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN") // Remarque : utilisation de hasAuthority au lieu de hasRole
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
-                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin())); // Pour la console H2
+                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)); // Pour la console H2
 
         return http.build();
     }
@@ -51,7 +54,7 @@ public class SecurityConfig {
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        grantedAuthoritiesConverter.setAuthorityPrefix(""); // Pas de préfixe supplémentaire car déjà inclus
+        grantedAuthoritiesConverter.setAuthorityPrefix(""); // Pas de préfixe supplémentaire, car déjà inclus
         grantedAuthoritiesConverter.setAuthoritiesClaimName("authorities");
 
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
@@ -71,7 +74,7 @@ public class SecurityConfig {
             keyPairGenerator.initialize(2048);
             return keyPairGenerator.generateKeyPair();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new JwtKeyGenerationException(e);
         }
     }
 

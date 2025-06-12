@@ -1,9 +1,17 @@
 package xyz.dedsecm.vroomvroomcar.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "users")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id
@@ -20,8 +28,6 @@ public class User {
 
     private String role; // admin, chauffeur, utilisateur
 
-    public User() {}
-
     public User(String username, String nom, String prenom, String mail, String password, String role) {
         this.username = username;
         this.nom = nom;
@@ -30,24 +36,4 @@ public class User {
         this.password = password;
         this.role = role;
     }
-
-    public Long getId() { return id; }
-
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
-
-    public String getNom() { return nom; }
-    public void setNom(String nom) { this.nom = nom; }
-
-    public String getPrenom() { return prenom; }
-    public void setPrenom(String prenom) { this.prenom = prenom; }
-
-    public String getMail() { return mail; }
-    public void setMail(String mail) { this.mail = mail; }
-
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
-
-    public String getRole() { return role; }
-    public void setRole(String role) { this.role = role; }
 }

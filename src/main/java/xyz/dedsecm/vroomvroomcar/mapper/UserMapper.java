@@ -5,6 +5,11 @@ import xyz.dedsecm.vroomvroomcar.model.User;
 
 public class UserMapper {
 
+    // Constructeur privé pour empêcher l'instanciation
+    private UserMapper() {
+
+    }
+
     public static UserDTO toDTO(User user) {
         return new UserDTO(
                 user.getUsername(),

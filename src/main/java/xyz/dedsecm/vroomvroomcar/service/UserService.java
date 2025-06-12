@@ -9,7 +9,6 @@ import xyz.dedsecm.vroomvroomcar.model.User;
 import xyz.dedsecm.vroomvroomcar.repository.UserRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -23,7 +22,7 @@ public class UserService {
     public List<UserDTO> getAllUsers() {
         return userRepository.findAll().stream()
                 .map(UserMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public UserDTO createUser(UserDTO dto) {
