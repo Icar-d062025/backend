@@ -26,9 +26,10 @@ public class User {
     private String mail;
     private String password;
 
-    private String role; // admin, chauffeur, utilisateur
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    public User(String username, String nom, String prenom, String mail, String password, String role) {
+    public User(String username, String nom, String prenom, String mail, String password, Role role) {
         this.username = username;
         this.nom = nom;
         this.prenom = prenom;
