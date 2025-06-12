@@ -10,24 +10,31 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true, nullable = false)
+    private String username;
+
     private String nom;
     private String prenom;
     private String mail;
-
     private String password;
 
-    // Constructeurs
+    private String role; // admin, chauffeur, utilisateur
+
     public User() {}
 
-    public User(String nom, String prenom, String mail) {
+    public User(String username, String nom, String prenom, String mail, String password, String role) {
+        this.username = username;
         this.nom = nom;
         this.prenom = prenom;
         this.mail = mail;
         this.password = password;
+        this.role = role;
     }
 
-    // Getters et Setters
     public Long getId() { return id; }
+
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
 
     public String getNom() { return nom; }
     public void setNom(String nom) { this.nom = nom; }
@@ -39,5 +46,8 @@ public class User {
     public void setMail(String mail) { this.mail = mail; }
 
     public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password;}
+    public void setPassword(String password) { this.password = password; }
+
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 }

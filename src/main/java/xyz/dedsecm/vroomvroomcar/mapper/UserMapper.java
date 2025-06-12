@@ -6,10 +6,24 @@ import xyz.dedsecm.vroomvroomcar.model.User;
 public class UserMapper {
 
     public static UserDTO toDTO(User user) {
-        return new UserDTO(user.getNom(), user.getPrenom(), user.getMail(), user.getPassword());
+        return new UserDTO(
+                user.getUsername(),
+                user.getNom(),
+                user.getPrenom(),
+                user.getMail(),
+                user.getPassword(),
+                user.getRole()
+        );
     }
 
     public static User toEntity(UserDTO dto) {
-        return new User(dto.getNom(), dto.getPrenom(), dto.getMail());
+        return new User(
+                dto.getUsername(),
+                dto.getNom(),
+                dto.getPrenom(),
+                dto.getMail(),
+                dto.getPassword(),
+                dto.getRole()
+        );
     }
 }
