@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import xyz.dedsecm.vroomvroomcar.dto.UserDTO;
 import xyz.dedsecm.vroomvroomcar.model.User;
 import xyz.dedsecm.vroomvroomcar.repository.UserRepository;
-import xyz.dedsecm.vroomvroomcar.security.TokenService;
+import xyz.dedsecm.vroomvroomcar.service.TokenService;
 
 @RestController
 @RequestMapping("/api/auth")

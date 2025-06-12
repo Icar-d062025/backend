@@ -1,8 +1,7 @@
-package xyz.dedsecm.vroomvroomcar.security;
+package xyz.dedsecm.vroomvroomcar.service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Value;
