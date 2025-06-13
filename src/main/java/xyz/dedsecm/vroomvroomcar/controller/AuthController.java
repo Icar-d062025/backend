@@ -28,7 +28,7 @@ public class AuthController {
                 .findFirst().orElse(null);
 
         if (user != null && passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
-            return tokenService.generateToken(user.getUsername(), user.getRole());
+            return tokenService.generateToken(user.getUsername(), user.getRole().name());
         }
 
         return "Invalid credentials";

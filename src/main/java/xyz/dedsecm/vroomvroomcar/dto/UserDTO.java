@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import xyz.dedsecm.vroomvroomcar.model.Role;
 
 @Getter
 @Setter
@@ -15,5 +16,5 @@ public class UserDTO {
     private String prenom;
     private String mail;
     private String password;
-    private String role;
+    private Role role;
 }
