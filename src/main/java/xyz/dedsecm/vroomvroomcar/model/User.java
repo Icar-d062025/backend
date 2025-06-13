@@ -1,13 +1,12 @@
 package xyz.dedsecm.vroomvroomcar.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.time.LocalTime;
 
 @Entity
-@Table(name = "users")
+@Table(name = "Utilisateur")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,25 +15,47 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_utilisateur")
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String username;
+    private String email;
 
     private String nom;
     private String prenom;
-    private String mail;
+
+    private String username;
+
+    @Column(name = "password", nullable = false)
     private String password;
+
+    private String adresse;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public User(String username, String nom, String prenom, String mail, String password, Role role) {
-        this.username = username;
+    private Boolean banni;
+
+    @Column(name = "raisonBanni")
+    private String raisonBanni;
+
+    @Column(name = "dureeBanni")
+    private LocalTime dureeBanni;
+
+    private Boolean vehiculePerso;
+
+    @Column(name = "Vehiculeid")
+    private Long vehiculeId;
+
+    // constructeur personnalisé
+    public User(String email, String nom, String prenom, String password, String username) {
+        this.email = email;
         this.nom = nom;
         this.prenom = prenom;
-        this.mail = mail;
         this.password = password;
-        this.role = role;
+        this.username = username;
+        this.role = Role.USER;
+        this.banni = false;
+        this.vehiculePerso = false;
     }
 }
