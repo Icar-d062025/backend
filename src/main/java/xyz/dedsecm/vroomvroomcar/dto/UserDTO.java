@@ -6,15 +6,24 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import xyz.dedsecm.vroomvroomcar.model.Role;
 
+import java.time.LocalTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDTO {
-    private String username;
+    private Long id;
+    private String email;
     private String nom;
     private String prenom;
-    private String mail;
+    private String username;
     private String password;
+    private String adresse;
     private Role role;
+    private Boolean banni;
+    private String raisonBanni;
+    private LocalTime dureeBanni;
+    private Boolean vehiculePerso;
+    private Long vehiculeId;
 }
