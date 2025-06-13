@@ -1,10 +1,10 @@
-package xyz.dedsecm.vroomvroomcar.dto;
+package xyz.dedsecm.icar.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import xyz.dedsecm.vroomvroomcar.model.Role;
+import xyz.dedsecm.icar.model.Role;
 
 import java.time.LocalTime;
 

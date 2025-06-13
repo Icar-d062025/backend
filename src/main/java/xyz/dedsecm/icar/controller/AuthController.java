@@ -1,12 +1,12 @@
-package xyz.dedsecm.vroomvroomcar.controller;
+package xyz.dedsecm.icar.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import xyz.dedsecm.vroomvroomcar.dto.UserDTO;
-import xyz.dedsecm.vroomvroomcar.model.User;
-import xyz.dedsecm.vroomvroomcar.repository.UserRepository;
-import xyz.dedsecm.vroomvroomcar.service.TokenService;
+import xyz.dedsecm.icar.dto.UserDTO;
+import xyz.dedsecm.icar.model.User;
+import xyz.dedsecm.icar.repository.UserRepository;
+import xyz.dedsecm.icar.service.TokenService;
 
 @RestController
 @RequestMapping("/api/auth")

@@ -1,4 +1,4 @@
-package xyz.dedsecm.vroomvroomcar.config;
+package xyz.dedsecm.icar.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +23,7 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import xyz.dedsecm.vroomvroomcar.exception.JwtKeyGenerationException;
+import xyz.dedsecm.icar.exception.JwtKeyGenerationException;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;

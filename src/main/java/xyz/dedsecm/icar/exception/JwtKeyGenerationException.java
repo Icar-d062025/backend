@@ -1,4 +1,4 @@
-package xyz.dedsecm.vroomvroomcar.exception;
+package xyz.dedsecm.icar.exception;
 
 public class JwtKeyGenerationException extends RuntimeException {
 

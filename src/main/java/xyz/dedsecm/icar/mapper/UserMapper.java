@@ -1,7 +1,7 @@
-package xyz.dedsecm.vroomvroomcar.mapper;
+package xyz.dedsecm.icar.mapper;
 
-import xyz.dedsecm.vroomvroomcar.dto.UserDTO;
-import xyz.dedsecm.vroomvroomcar.model.User;
+import xyz.dedsecm.icar.dto.UserDTO;
+import xyz.dedsecm.icar.model.User;
 
 public class UserMapper {
 

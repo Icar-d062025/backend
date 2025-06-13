@@ -1,4 +1,4 @@
-package xyz.dedsecm.vroomvroomcar.controller;
+package xyz.dedsecm.icar.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,12 +1,12 @@
-package xyz.dedsecm.vroomvroomcar.service;
+package xyz.dedsecm.icar.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import xyz.dedsecm.vroomvroomcar.dto.UserDTO;
-import xyz.dedsecm.vroomvroomcar.mapper.UserMapper;
-import xyz.dedsecm.vroomvroomcar.model.User;
-import xyz.dedsecm.vroomvroomcar.repository.UserRepository;
+import xyz.dedsecm.icar.dto.UserDTO;
+import xyz.dedsecm.icar.mapper.UserMapper;
+import xyz.dedsecm.icar.model.User;
+import xyz.dedsecm.icar.repository.UserRepository;
 
 import java.time.LocalTime;
 import java.util.List;

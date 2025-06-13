@@ -1,10 +1,10 @@
-package xyz.dedsecm.vroomvroomcar;
+package xyz.dedsecm.icar;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class VroomvroomcarApplicationTests {
+class IcarApplicationTests {
 
     @Test
     void contextLoads() {

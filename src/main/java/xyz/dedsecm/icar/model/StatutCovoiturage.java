@@ -1,4 +1,4 @@
-package xyz.dedsecm.vroomvroomcar.model;
+package xyz.dedsecm.icar.model;
 
 public enum StatutCovoiturage {
     RESERVABLE,

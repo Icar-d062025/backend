@@ -1,11 +1,11 @@
-package xyz.dedsecm.vroomvroomcar.controller;
+package xyz.dedsecm.icar.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.dedsecm.vroomvroomcar.dto.UserDTO;
-import xyz.dedsecm.vroomvroomcar.service.UserService;
+import xyz.dedsecm.icar.dto.UserDTO;
+import xyz.dedsecm.icar.service.UserService;
 
 import java.time.LocalTime;
 import java.util.List;

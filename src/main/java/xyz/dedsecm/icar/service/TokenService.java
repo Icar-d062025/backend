@@ -1,4 +1,4 @@
-package xyz.dedsecm.vroomvroomcar.service;
+package xyz.dedsecm.icar.service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;

@@ -1,13 +1,13 @@
-package xyz.dedsecm.vroomvroomcar;
+package xyz.dedsecm.icar;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class VroomvroomcarApplication {
+public class IcarApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(VroomvroomcarApplication.class, args);
+        SpringApplication.run(IcarApplication.class, args);
     }
 
 }

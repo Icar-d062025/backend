@@ -1,7 +1,7 @@
-package xyz.dedsecm.vroomvroomcar.repository;
+package xyz.dedsecm.icar.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import xyz.dedsecm.vroomvroomcar.model.User;
+import xyz.dedsecm.icar.model.User;
 
 import java.util.Optional;
 
