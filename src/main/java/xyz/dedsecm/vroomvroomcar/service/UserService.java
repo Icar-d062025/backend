@@ -10,7 +10,6 @@ import xyz.dedsecm.vroomvroomcar.repository.UserRepository;
 
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
