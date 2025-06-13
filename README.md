@@ -5,6 +5,7 @@
 [![Spring Security](https://img.shields.io/badge/Spring_Security-JWT-6DB33F?logo=spring-security&logoColor=white)](https://spring.io/projects/spring-security)
 [![Spring Data JPA](https://img.shields.io/badge/Spring_Data-JPA-6DB33F?logo=spring&logoColor=white)](https://spring.io/projects/spring-data-jpa)
 [![H2 Database](https://img.shields.io/badge/H2-Database-0000FF?logo=h2-database&logoColor=white)](https://www.h2database.com/)
+[![MIT License](https://img.shields.io/badge/Licence-MIT-red.svg)](licence)
 
 ## 📋 Description
 
@@ -70,7 +71,7 @@ xyz.dedsecm.icar/
 
 ```bash
 # Cloner le dépôt
-git clone git@github.com:d022025filsrouge/backend.git
+git clone https://github.com/Icar-d062025/backend.git
 cd backend
 
 # Compiler le projet
@@ -115,8 +116,11 @@ mvn verify
 
 ## 👥 Contributeurs
 
-Ce projet est développé dans le cadre d'un projet fil rouge par l'équipe VroomVroomCar.
+Ce projet est développé dans le cadre d'un projet fil rouge par l'équipe Icar, avec les contributions de :
+- [RikiLaNeko](https://github.com/RikiLaNeko)
+- [Fromont-L](https://github.com/Fromont-L)
+- [p243k](https://github.com/p243k)
 
 ## 📄 Licence
 
-Ce projet est sous licence MIT.
+Ce projet est sous licence [MIT](licence)
