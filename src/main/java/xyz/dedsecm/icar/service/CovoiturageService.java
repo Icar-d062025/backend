@@ -94,7 +94,7 @@ public class CovoiturageService {
         }
 
         if (dto.getStatut() == null) {
-            throw new IllegalArgumentException("La distance doit être supérieure à 0");
+            throw new IllegalArgumentException("Le statut doit être renseigné");
         }
     }
 }
