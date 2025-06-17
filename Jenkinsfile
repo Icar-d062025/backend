@@ -2,12 +2,13 @@ pipeline {
     agent any
 
     tools {
-        maven 'maven'      // Nom défini dans "Global Tool Configuration"
-        jdk 'JDK21'        // Nom exact de ton JDK dans Jenkins
+        maven 'maven'   // Nom exact défini dans "Global Tool Configuration"
+        jdk 'JDK21'     // Nom de ton JDK 21 dans Jenkins
     }
 
     environment {
-        SONAR_TOKEN = credentials('Sonarqube') // ID du credential sécurisé (type: Secret text)
+        // On utilise la valeur sécurisée des credentials Jenkins ici
+        SONAR_TOKEN = credentials('Sonarqube')  // <- ID de ton token dans les credentials
     }
 
     stages {
@@ -17,7 +18,7 @@ pipeline {
             }
         }
 
-        stage('Build & Unit Test') {
+        stage('Build & Test') {
             steps {
                 sh 'mvn clean test'
             }
@@ -25,27 +26,16 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') { // Le nom défini dans Jenkins > Manage Jenkins > Configure System
-                    sh """
-                        mvn verify sonar:sonar \
-                        -Dsonar.login=${SONAR_TOKEN}
-                    """
+                withSonarQubeEnv('SonarQube') { // Le nom du serveur défini dans Jenkins > Manage Jenkins > Configure System
+                    sh 'mvn verify sonar:sonar'
                 }
             }
         }
 
         stage('Quality Gate') {
             steps {
-                script {
-                    try {
-                        // Patiente jusqu'à 2 minutes que le Quality Gate soit terminé
-                        timeout(time: 2, unit: 'MINUTES') {
-                            waitForQualityGate abortPipeline: true
-                        }
-                    } catch (e) {
-                        echo "⚠️ Quality Gate non récupéré à temps. Vérifie manuellement dans SonarQube si nécessaire."
-                        error("Quality Gate timeout")
-                    }
+                timeout(time: 1, unit: 'HOURS') {
+                    waitForQualityGate abortPipeline: true
                 }
             }
         }
