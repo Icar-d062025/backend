@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven'  // Nom de l'installation Maven configurée dans Jenkins
+        maven 'maven'  // Nom de l'installation Maven configurée dans Jenkins
         jdk 'JDK21'    // Nom de l'installation JDK configurée dans Jenkins
     }
 
