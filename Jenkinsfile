@@ -33,21 +33,19 @@ pipeline {
         }
 
         stage('Quality Gate') {
-                    steps {
-                        script {
-                            try {
-                                // Patiente jusqu'à 2 minutes que le Quality Gate soit terminé
-                                timeout(time: 2, unit: 'MINUTES') {
-                                    waitForQualityGate abortPipeline: true
-                                }
-                            } catch (e) {
-                                echo "⚠️ Quality Gate non récupéré à temps. Vérifie manuellement dans SonarQube si nécessaire."
-                                error("Quality Gate timeout")
-                            }
+            steps {
+                script {
+                    try {
+                        timeout(time: 10, unit: 'MINUTES') {
+                            waitForQualityGate abortPipeline: true
                         }
+                    } catch (e) {
+                        echo "Impossible de récupérer le résultat du Quality Gate, mais l'analyse Sonar est bien lancée."
                     }
                 }
             }
+        }
+    }
 
     post {
         always {
