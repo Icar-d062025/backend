@@ -2,8 +2,12 @@ pipeline {
     agent any
 
     tools {
-        maven 'maven'   // Nom de ta config Maven dans Jenkins
-        jdk 'JDK21'     // Nom de ta config JDK dans Jenkins
+        maven 'maven'      // Nom défini dans "Global Tool Configuration"
+        jdk 'JDK21'        // Nom exact de ton JDK dans Jenkins
+    }
+
+    environment {
+        SONAR_TOKEN = credentials('Sonarqube') // ID du credential sécurisé (type: Secret text)
     }
 
     stages {
@@ -13,7 +17,7 @@ pipeline {
             }
         }
 
-        stage('Build & Test') {
+        stage('Build & Unit Test') {
             steps {
                 sh 'mvn clean test'
             }
@@ -21,18 +25,27 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') {
-                    withCredentials([string(credentialsId: '152c5835-37c9-429e-b089-5d05551fbd03', variable: 'SONAR_TOKEN')]) {
-                        sh 'mvn clean verify sonar:sonar -Dsonar.login=$SONAR_TOKEN'
-                    }
+                withSonarQubeEnv('SonarQube') { // Le nom défini dans Jenkins > Manage Jenkins > Configure System
+                    sh """
+                        mvn verify sonar:sonar \
+                        -Dsonar.login=${SONAR_TOKEN}
+                    """
                 }
             }
         }
 
         stage('Quality Gate') {
             steps {
-                timeout(time: 1, unit: 'HOURS') {
-                    waitForQualityGate abortPipeline: true
+                script {
+                    try {
+                        // Patiente jusqu'à 2 minutes que le Quality Gate soit terminé
+                        timeout(time: 2, unit: 'MINUTES') {
+                            waitForQualityGate abortPipeline: true
+                        }
+                    } catch (e) {
+                        echo "⚠️ Quality Gate non récupéré à temps. Vérifie manuellement dans SonarQube si nécessaire."
+                        error("Quality Gate timeout")
+                    }
                 }
             }
         }
@@ -44,10 +57,10 @@ pipeline {
             recordCoverage(tools: [[parser: 'JACOCO']])
         }
         success {
-            echo 'Pipeline exécutée avec succès'
+            echo '🎉 Pipeline exécutée avec succès !'
         }
         failure {
-            echo 'La pipeline a échoué'
+            echo '💥 La pipeline a échoué.'
         }
     }
 }
