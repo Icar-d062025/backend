@@ -47,7 +47,8 @@ pipeline {
                     }
                 }
             }
-        }
+        } // Fin du stage 'Quality Gate'
+    } // <<<< Accolade fermante ajoutée ici pour clore le bloc 'stages'
 
     post {
         always {
