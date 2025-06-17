@@ -36,7 +36,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        timeout(time: 10, unit: 'MINUTES') {
+                        timeout(time: 1, unit: 'MINUTES') {
                             waitForQualityGate abortPipeline: true
                         }
                     } catch (e) {
@@ -45,6 +45,7 @@ pipeline {
                 }
             }
         }
+
     }
 
     post {
