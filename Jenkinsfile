@@ -7,8 +7,7 @@ pipeline {
     }
 
     environment {
-        // On utilise la valeur sécurisée des credentials Jenkins ici
-        SONAR_TOKEN = credentials('Sonarqube')  // <- ID de ton token dans les credentials
+        SONAR_TOKEN = credentials('Sonarqube')
     }
 
     stages {
@@ -26,7 +25,7 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') { // Le nom du serveur défini dans Jenkins > Manage Jenkins > Configure System
+                withSonarQubeEnv('SonarQube') {
                     sh 'mvn verify sonar:sonar'
                 }
             }
@@ -43,8 +42,10 @@ pipeline {
 
     post {
         always {
-            junit '**/target/surefire-reports/*.xml'
-            recordCoverage(tools: [[parser: 'JACOCO']])
+            node {
+                junit '**/target/surefire-reports/*.xml'
+                recordCoverage(tools: [[parser: 'JACOCO']])
+            }
         }
         success {
             echo '🎉 Pipeline exécutée avec succès !'
