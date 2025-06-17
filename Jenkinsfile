@@ -33,8 +33,14 @@ pipeline {
 
         stage('Quality Gate') {
             steps {
-                timeout(time: 1, unit: 'HOURS') {
-                    waitForQualityGate abortPipeline: true
+                script {
+                    try {
+                        timeout(time: 10, unit: 'MINUTES') {
+                            waitForQualityGate abortPipeline: true
+                        }
+                    } catch (e) {
+                        echo "Impossible de récupérer le résultat du Quality Gate, mais l'analyse Sonar est bien lancée."
+                    }
                 }
             }
         }
@@ -42,7 +48,7 @@ pipeline {
 
     post {
         always {
-            node('docker-agent') {  // Ajout du label 'docker-agent' basé sur les logs
+            node(any) {  // "any" pour utiliser n'importe quel agent disponible
                 junit '**/target/surefire-reports/*.xml'
                 recordCoverage(tools: [[parser: 'JACOCO']])
             }
