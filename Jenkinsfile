@@ -2,14 +2,14 @@ pipeline {
     agent any
 
     tools {
-        maven 'maven'  // Nom de l'installation Maven configurée dans Jenkins
-        jdk 'JDK21'    // Nom de l'installation JDK configurée dans Jenkins
+        maven 'maven'   // Assure-toi que ce nom correspond à ta config Maven dans Jenkins
+        jdk 'JDK21'     // Nom de l'installation JDK 21 configurée dans Jenkins
     }
 
     stages {
         stage('Checkout') {
             steps {
-                checkout scm  // Utilise la configuration SCM de Jenkins plutôt qu'une URL en dur
+                checkout scm
             }
         }
 
@@ -21,13 +21,13 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') {  // Nom de l'installation SonarQube configurée dans Jenkins
+                withSonarQubeEnv('SonarQube') {
                     sh 'mvn sonar:sonar'
                 }
             }
         }
 
-        stage("Quality Gate") {
+        stage('Quality Gate') {
             steps {
                 timeout(time: 1, unit: 'HOURS') {
                     waitForQualityGate abortPipeline: true
@@ -38,8 +38,8 @@ pipeline {
 
     post {
         always {
-            junit '**/target/surefire-reports/*.xml'  // Publication des résultats de test
-            recordCoverage(tools: [[parser: 'JACOCO']])  // Publication des rapports de couverture JaCoCo
+            junit '**/target/surefire-reports/*.xml'
+            recordCoverage(tools: [[parser: 'JACOCO']])
         }
         success {
             echo 'Pipeline exécutée avec succès'
