@@ -42,10 +42,8 @@ pipeline {
 
     post {
         always {
-            node {
-                junit '**/target/surefire-reports/*.xml'
-                recordCoverage(tools: [[parser: 'JACOCO']])
-            }
+            junit '**/target/surefire-reports/*.xml'
+            recordCoverage(tools: [[parser: 'JACOCO']])
         }
         success {
             echo '🎉 Pipeline exécutée avec succès !'
