@@ -48,7 +48,7 @@ pipeline {
 
     post {
         always {
-            node(any) {  // "any" pour utiliser n'importe quel agent disponible
+            node('docker-agent') {  // Utiliser le nom exact de l'agent dans les logs
                 junit '**/target/surefire-reports/*.xml'
                 recordCoverage(tools: [[parser: 'JACOCO']])
             }
