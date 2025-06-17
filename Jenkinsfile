@@ -36,15 +36,18 @@ pipeline {
                 script {
                     try {
                         timeout(time: 10, unit: 'MINUTES') {
+                            // Si cette étape échoue (ex: Quality Gate non respecté),
+                            // elle marque le pipeline comme échoué à cause de abortPipeline: true
                             waitForQualityGate abortPipeline: true
                         }
                     } catch (e) {
                         echo "Impossible de récupérer le résultat du Quality Gate, mais l'analyse Sonar est bien lancée."
+                        // Même avec ce catch, si waitForQualityGate a déjà marqué le build comme FAILURE,
+                        // ce statut persiste.
                     }
                 }
             }
         }
-    }
 
     post {
         always {
