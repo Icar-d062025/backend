@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     tools {
-        maven 'maven'   // Assure-toi que ce nom correspond à ta config Maven dans Jenkins
-        jdk 'JDK21'     // Nom de l'installation JDK 21 configurée dans Jenkins
+        maven 'maven'   // Nom de ta config Maven dans Jenkins
+        jdk 'JDK21'     // Nom de ta config JDK dans Jenkins
     }
 
     stages {
@@ -22,7 +22,9 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
-                    sh 'mvn clean verify sonar:sonar -Dsonar.login=$SONAR_TOKEN'
+                    withCredentials([string(credentialsId: '152c5835-37c9-429e-b089-5d05551fbd03', variable: 'SONAR_TOKEN')]) {
+                        sh 'mvn clean verify sonar:sonar -Dsonar.login=$SONAR_TOKEN'
+                    }
                 }
             }
         }
