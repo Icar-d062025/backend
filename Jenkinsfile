@@ -42,7 +42,7 @@ pipeline {
 
     post {
         always {
-            node {
+            node('docker-agent') {  // Ajout du label 'docker-agent' basé sur les logs
                 junit '**/target/surefire-reports/*.xml'
                 recordCoverage(tools: [[parser: 'JACOCO']])
             }
