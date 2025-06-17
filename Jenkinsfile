@@ -50,7 +50,8 @@ pipeline {
         always {
             node('docker-agent') {  // Utiliser le nom exact de l'agent dans les logs
                 junit '**/target/surefire-reports/*.xml'
-                recordCoverage(tools: [[parser: 'JACOCO']])
+                // Correction: Spécifier le pattern pour localiser le rapport JaCoCo
+                recordCoverage(tools: [[parser: 'JACOCO', pattern: '**/target/site/jacoco/jacoco.xml']])
             }
         }
         success {
