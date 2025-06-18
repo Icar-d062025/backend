@@ -1,10 +1,10 @@
-package xyz.dedsecm.vroomvroomcar.repository;
+package xyz.dedsecm.icar.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import xyz.dedsecm.vroomvroomcar.model.ReservationVehicule;
+import xyz.dedsecm.icar.model.ReservationVehicule;
 
 import java.time.LocalDate;
 import java.util.List;
