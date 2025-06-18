@@ -3,12 +3,24 @@ package xyz.dedsecm.icar.mapper;
 import xyz.dedsecm.icar.dto.UserDTO;
 import xyz.dedsecm.icar.model.User;
 
+/**
+ * Mapper utilitaire pour convertir entre les entités User et les DTO UserDTO.
+ * <p>
+ * Fournit des méthodes statiques pour transformer un objet métier (entité) en DTO et inversement.
+ * Permet de séparer la logique de conversion du reste de l'application.
+ * </p>
+ */
 public class UserMapper {
+    /**
+     * Constructeur privé pour empêcher l'instanciation de la classe utilitaire.
+     */
+    private UserMapper() {}
 
-    // Constructeur privé pour empêcher l'instanciation
-    private UserMapper() {
-    }
-
+    /**
+     * Convertit une entité User en DTO UserDTO.
+     * @param user l'entité à convertir
+     * @return le DTO correspondant
+     */
     public static UserDTO toDTO(User user) {
         return new UserDTO(
                 user.getId(),
@@ -27,6 +39,11 @@ public class UserMapper {
         );
     }
 
+    /**
+     * Convertit un DTO UserDTO en entité User.
+     * @param dto le DTO à convertir
+     * @return l'entité correspondante
+     */
     public static User toEntity(UserDTO dto) {
         User user = new User();
         user.setId(dto.getId());

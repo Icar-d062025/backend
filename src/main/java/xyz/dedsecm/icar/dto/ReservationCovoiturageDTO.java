@@ -1,4 +1,4 @@
-package xyz.dedsecm.vroomvroomcar.dto;
+package xyz.dedsecm.icar.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,29 +9,56 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
 
+/**
+ * DTO (Data Transfer Object) pour la réservation d'un covoiturage.
+ * <p>
+ * Permet de transférer les informations relatives à une réservation de covoiturage entre les différentes couches de l'application.
+ * Contient :
+ * <ul>
+ *   <li>l'identifiant de la réservation</li>
+ *   <li>le statut de la réservation</li>
+ *   <li>la date de réservation</li>
+ *   <li>l'identifiant de l'utilisateur</li>
+ * </ul>
+ * </p>
+ */
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReservationCovoiturageDTO {
 
+    /** Identifiant unique de la réservation. */
     private Integer id;
 
+    /** Statut de la réservation (ex : 1 = confirmée, 0 = en attente, etc.). */
     private Integer statut;
 
+    /** Date à laquelle la réservation a été effectuée. */
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateReservation;
 
+    /** Identifiant de l'utilisateur ayant effectué la réservation. */
     private Integer utilisateurId;
 
     // Constructeur pour création d'une nouvelle réservation (sans ID)
+    /**
+     * Constructeur pour création d'une nouvelle réservation (sans ID).
+     * @param statut Statut de la réservation
+     * @param utilisateurId Identifiant de l'utilisateur
+     */
     public ReservationCovoiturageDTO(Integer statut, Integer utilisateurId) {
         this.statut = statut;
         this.utilisateurId = utilisateurId;
         this.dateReservation = LocalDate.now();
     }
 
-    // Constructeur avec date personnalisée
+    /**
+     * Constructeur avec date personnalisée.
+     * @param statut Statut de la réservation
+     * @param dateReservation Date de la réservation
+     * @param utilisateurId Identifiant de l'utilisateur
+     */
     public ReservationCovoiturageDTO(Integer statut, LocalDate dateReservation, Integer utilisateurId) {
         this.statut = statut;
         this.dateReservation = dateReservation;
@@ -39,8 +66,8 @@ public class ReservationCovoiturageDTO {
     }
 
     /**
-     * Vérifie si la réservation est confirmée
-     * @return true si le statut indique une réservation confirmée
+     * Vérifie si la réservation est confirmée.
+     * @return true si le statut indique une réservation confirmée (statut == 1)
      */
     public boolean isConfirmee() {
         return statut != null && statut == 1;

@@ -1,4 +1,4 @@
-package xyz.dedsecm.vroomvroomcar.dto;
+package xyz.dedsecm.icar.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,28 +12,53 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
 
+/**
+ * DTO (Data Transfer Object) pour la réservation d'un véhicule.
+ * <p>
+ * Permet de transférer les informations relatives à une réservation de véhicule entre les différentes couches de l'application.
+ * Contient :
+ * <ul>
+ *   <li>l'identifiant de la réservation</li>
+ *   <li>les dates de début et de fin de réservation</li>
+ *   <li>la date de création de la réservation</li>
+ *   <li>l'identifiant de l'utilisateur</li>
+ *   <li>l'identifiant du véhicule</li>
+ * </ul>
+ * </p>
+ */
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReservationVehiculeDTO {
-
+    /** Identifiant unique de la réservation. */
     private Integer id;
 
+    /** Date de début de la réservation. */
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateDebut;
 
+    /** Date de fin de la réservation. */
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateFin;
 
+    /** Date de création de la réservation. */
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateCreation;
 
+    /** Identifiant de l'utilisateur ayant effectué la réservation. */
     private Integer utilisateurId;
 
+    /** Identifiant du véhicule réservé. */
     private Integer vehiculeId;
 
-    // Constructeur pour création d'une nouvelle réservation (sans ID)
+    /**
+     * Constructeur pour création d'une nouvelle réservation (sans ID).
+     * @param dateDebut Date de début de la réservation
+     * @param dateFin Date de fin de la réservation
+     * @param utilisateurId Identifiant de l'utilisateur
+     * @param vehiculeId Identifiant du véhicule
+     */
     public ReservationVehiculeDTO(LocalDate dateDebut, LocalDate dateFin, Integer utilisateurId, Integer vehiculeId) {
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
@@ -42,7 +67,7 @@ public class ReservationVehiculeDTO {
     }
 
     /**
-     * Vérifie si la date de fin est après la date de début
+     * Vérifie si la date de fin est après la date de début.
      * @return true si les dates sont cohérentes
      */
     public boolean isDateRangeValid() {
@@ -53,7 +78,7 @@ public class ReservationVehiculeDTO {
     }
 
     /**
-     * Calcule la durée de la réservation en jours
+     * Calcule la durée de la réservation en jours.
      * @return le nombre de jours de réservation
      */
     public long getDureeEnJours() {

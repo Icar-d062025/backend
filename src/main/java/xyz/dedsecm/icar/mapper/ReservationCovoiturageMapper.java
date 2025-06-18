@@ -1,12 +1,19 @@
-package xyz.dedsecm.vroomvroomcar.mapper;
+package xyz.dedsecm.icar.mapper;
 
-import xyz.dedsecm.vroomvroomcar.dto.ReservationCovoiturageDTO;
-import xyz.dedsecm.vroomvroomcar.model.ReservationCovoiturage;
+import xyz.dedsecm.icar.dto.ReservationCovoiturageDTO;
+import xyz.dedsecm.icar.model.ReservationCovoiturage;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Mapper Spring pour convertir entre les entités ReservationCovoiturage et les DTO ReservationCovoiturageDTO.
+ * <p>
+ * Fournit des méthodes pour transformer un objet métier (entité) en DTO et inversement.
+ * Permet de séparer la logique de conversion du reste de l'application.
+ * </p>
+ */
 @Component
 public class ReservationCovoiturageMapper {
 
