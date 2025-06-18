@@ -27,6 +27,9 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
+            options {
+                timeout(time: 5, unit: 'MINUTES')
+            }
             steps {
                 echo 'Analyse SonarQube en cours...'
                 withSonarQubeEnv(installationName: 'SonarQube') {
@@ -36,6 +39,9 @@ pipeline {
         }
 
         stage('Quality Gate') {
+            options {
+                timeout(time: 5, unit: 'MINUTES')
+            }
             steps {
                 echo 'Vérification de la Quality Gate...'
                 waitForQualityGate(abortPipeline: true)
