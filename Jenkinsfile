@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     tools {
-        maven 'maven'       // Nom exact défini dans "Global Tool Configuration"
-        jdk 'JDK21'         // Nom du JDK 21 dans Jenkins
+        maven 'maven'
+        jdk 'JDK21'
     }
 
     environment {
@@ -30,14 +30,15 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                sh "mvn sonar:sonar -Dsonar.login=$SONAR_TOKEN"
+                withSonarQubeEnv('SonarQube') {
+                    sh "mvn sonar:sonar -Dsonar.login=$SONAR_TOKEN"
+                }
             }
         }
 
         stage('Quality Gate') {
             steps {
                 timeout(time: 5, unit: 'MINUTES') {
-                    // Attend la QualityGate et interrompt le pipeline en cas d'échec
                     waitForQualityGate abortPipeline: true
                 }
             }
