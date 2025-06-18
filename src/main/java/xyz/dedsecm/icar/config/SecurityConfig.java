@@ -31,10 +31,22 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
 
+/**
+ * Configuration de sécurité pour l'application.
+ * Cette classe définit les paramètres de sécurité Spring, notamment l'authentification JWT,
+ * la gestion des autorisations et le chiffrement des mots de passe.
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    /**
+     * Configure la chaîne de filtres de sécurité HTTP.
+     *
+     * @param http l'objet HttpSecurity à configurer
+     * @return la chaîne de filtres de sécurité configurée
+     * @throws Exception si une erreur survient pendant la configuration
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
@@ -42,7 +54,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/login").permitAll()
                         .requestMatchers("/api/users").permitAll()
                         .requestMatchers("/h2-console/**").permitAll() // Si vous utilisez la console H2
-                        .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN") // Remarque : utilisation de hasAuthority au lieu de hasRole
+                        .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN") // Remarque : utilisation de hasAuthority au lieu de hasRole
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
@@ -51,6 +63,11 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /**
+     * Configure le convertisseur d'authentification JWT pour extraire les autorités.
+     *
+     * @return le convertisseur d'authentification JWT configuré
+     */
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
@@ -62,11 +79,22 @@ public class SecurityConfig {
         return jwtAuthenticationConverter;
     }
 
+    /**
+     * Fournit un encodeur de mot de passe pour le chiffrement.
+     *
+     * @return l'encodeur de mot de passe BCrypt
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Génère une paire de clés RSA pour la signature JWT.
+     *
+     * @return la paire de clés RSA générée
+     * @throws JwtKeyGenerationException si la génération de clé échoue
+     */
     @Bean
     public KeyPair keyPair() {
         try {
@@ -78,6 +106,11 @@ public class SecurityConfig {
         }
     }
 
+    /**
+     * Configure la source JWK qui contient la paire de clés pour signer et vérifier les JWT.
+     *
+     * @return la source JWK configurée avec la paire de clés RSA
+     */
     @Bean
     public JWKSource<SecurityContext> jwkSource() {
         KeyPair keyPair = keyPair();
@@ -93,11 +126,22 @@ public class SecurityConfig {
         return new ImmutableJWKSet<>(jwkSet);
     }
 
+    /**
+     * Configure le décodeur JWT qui utilise la clé publique RSA.
+     *
+     * @return le décodeur JWT configuré
+     */
     @Bean
     public JwtDecoder jwtDecoder() {
         return NimbusJwtDecoder.withPublicKey((RSAPublicKey) keyPair().getPublic()).build();
     }
 
+    /**
+     * Configure l'encodeur JWT qui utilise la source JWK.
+     *
+     * @param jwkSource la source JWK à utiliser pour l'encodage
+     * @return l'encodeur JWT configuré
+     */
     @Bean
     public JwtEncoder jwtEncoder(JWKSource<SecurityContext> jwkSource) {
         return new NimbusJwtEncoder(jwkSource);

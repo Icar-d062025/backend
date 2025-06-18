@@ -55,7 +55,21 @@ public class CovoiturageService {
 
 
 
-    private void validateCovoiturageDTO(CovoiturageDTO dto) {
+    /**
+     * Valide les données d'un objet CovoiturageDTO avant sa création ou sa mise à jour.
+     * <p>
+     * Vérifie notamment :
+     * <ul>
+     *   <li>Que la date d'arrivée est postérieure à la date de départ</li>
+     *   <li>Que les adresses de départ et d'arrivée sont renseignées et différentes</li>
+     *   <li>Que le nombre de places est positif et cohérent avec le nombre de places restantes</li>
+     *   <li>Que la distance est positive</li>
+     *   <li>Que le statut est renseigné</li>
+     * </ul>
+     * Lance une IllegalArgumentException en cas de règle non respectée.
+     * @param dto le DTO à valider
+     */
+    void validateCovoiturageDTO(CovoiturageDTO dto) {
 
         if (dto.getDateHeureDepart() == null || dto.getDateHeureArrivee() == null) {
             throw new IllegalArgumentException("Les dates de départ et d'arrivée sont obligatoires");
@@ -98,3 +112,4 @@ public class CovoiturageService {
         }
     }
 }
+
