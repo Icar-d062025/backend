@@ -160,4 +160,54 @@ class UserServiceTest {
         RuntimeException ex = assertThrows(RuntimeException.class, () -> userService.banUser(2L, "raison", java.time.LocalTime.NOON));
         assertTrue(ex.getMessage().contains("Utilisateur non trouvé"));
     }
+
+    @Test
+    void testUnbanUserFound() {
+        User user = new User(1L, "mail@test.com", "Nom", "Prenom", "user", "pass", "adr", Role.USER, true, "raison", java.time.LocalTime.NOON, false, null);
+        when(userRepository.findById(1L)).thenReturn(java.util.Optional.of(user));
+        when(userRepository.save(any())).thenReturn(user);
+        UserDTO result = userService.unbanUser(1L);
+        assertFalse(result.getBanni());
+        assertNull(result.getRaisonBanni());
+        assertNull(result.getDureeBanni());
+    }
+
+    @Test
+    void testUnbanUserNotFound() {
+        when(userRepository.findById(2L)).thenReturn(java.util.Optional.empty());
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> userService.unbanUser(2L));
+        assertTrue(ex.getMessage().contains("Utilisateur non trouvé"));
+    }
+
+    @Test
+    void testAssignVehicleFound() {
+        User user = new User(1L, "mail@test.com", "Nom", "Prenom", "user", "pass", "adr", Role.USER, false, null, null, false, null);
+        when(userRepository.findById(1L)).thenReturn(java.util.Optional.of(user));
+        when(userRepository.save(any())).thenReturn(user);
+        UserDTO result = userService.assignVehicle(1L, 99L);
+        assertEquals(99L, result.getVehiculeId());
+    }
+
+    @Test
+    void testAssignVehicleNotFound() {
+        when(userRepository.findById(2L)).thenReturn(java.util.Optional.empty());
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> userService.assignVehicle(2L, 99L));
+        assertTrue(ex.getMessage().contains("Utilisateur non trouvé"));
+    }
+
+    @Test
+    void testExistsByEmail() {
+        when(userRepository.existsByEmail("mail@test.com")).thenReturn(true);
+        assertTrue(userService.existsByEmail("mail@test.com"));
+        when(userRepository.existsByEmail("notfound@mail.com")).thenReturn(false);
+        assertFalse(userService.existsByEmail("notfound@mail.com"));
+    }
+
+    @Test
+    void testExistsByUsername() {
+        when(userRepository.existsByUsername("user")).thenReturn(true);
+        assertTrue(userService.existsByUsername("user"));
+        when(userRepository.existsByUsername("notfound")).thenReturn(false);
+        assertFalse(userService.existsByUsername("notfound"));
+    }
 }

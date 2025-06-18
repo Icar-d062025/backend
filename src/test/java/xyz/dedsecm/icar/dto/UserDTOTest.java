@@ -94,4 +94,26 @@ class UserDTOTest {
         // Comparaison avec lui-même
         assertEquals(dto, dto);
     }
+
+    @Test
+    void testEqualsAllBranchesNullsAndDiffs() {
+        UserDTO base = new UserDTO(1L, "a@mail.com", "A", "B", "ab", "pw", "adr", Role.USER, false, null, java.time.LocalTime.of(0,0), false, null);
+        // Tous les champs null sauf id
+        UserDTO allNull = new UserDTO(1L, null, null, null, null, null, null, null, null, null, null, null, null);
+        assertNotEquals(base, allNull);
+        // Un champ différent à chaque fois
+        assertNotEquals(base, new UserDTO(2L, "a@mail.com", "A", "B", "ab", "pw", "adr", Role.USER, false, null, java.time.LocalTime.of(0,0), false, null));
+        assertNotEquals(base, new UserDTO(1L, "b@mail.com", "A", "B", "ab", "pw", "adr", Role.USER, false, null, java.time.LocalTime.of(0,0), false, null));
+        assertNotEquals(base, new UserDTO(1L, "a@mail.com", "C", "B", "ab", "pw", "adr", Role.USER, false, null, java.time.LocalTime.of(0,0), false, null));
+        assertNotEquals(base, new UserDTO(1L, "a@mail.com", "A", "D", "ab", "pw", "adr", Role.USER, false, null, java.time.LocalTime.of(0,0), false, null));
+        assertNotEquals(base, new UserDTO(1L, "a@mail.com", "A", "B", "xy", "pw", "adr", Role.USER, false, null, java.time.LocalTime.of(0,0), false, null));
+        assertNotEquals(base, new UserDTO(1L, "a@mail.com", "A", "B", "ab", "pw2", "adr", Role.USER, false, null, java.time.LocalTime.of(0,0), false, null));
+        assertNotEquals(base, new UserDTO(1L, "a@mail.com", "A", "B", "ab", "pw", "adr2", Role.USER, false, null, java.time.LocalTime.of(0,0), false, null));
+        assertNotEquals(base, new UserDTO(1L, "a@mail.com", "A", "B", "ab", "pw", "adr", Role.ADMIN, false, null, java.time.LocalTime.of(0,0), false, null));
+        assertNotEquals(base, new UserDTO(1L, "a@mail.com", "A", "B", "ab", "pw", "adr", Role.USER, true, null, java.time.LocalTime.of(0,0), false, null));
+        assertNotEquals(base, new UserDTO(1L, "a@mail.com", "A", "B", "ab", "pw", "adr", Role.USER, false, "ban", java.time.LocalTime.of(0,0), false, null));
+        assertNotEquals(base, new UserDTO(1L, "a@mail.com", "A", "B", "ab", "pw", "adr", Role.USER, false, null, java.time.LocalTime.of(1,0), false, null));
+        assertNotEquals(base, new UserDTO(1L, "a@mail.com", "A", "B", "ab", "pw", "adr", Role.USER, false, null, java.time.LocalTime.of(0,0), true, null));
+        assertNotEquals(base, new UserDTO(1L, "a@mail.com", "A", "B", "ab", "pw", "adr", Role.USER, false, null, java.time.LocalTime.of(0,0), false, 99L));
+    }
 }
