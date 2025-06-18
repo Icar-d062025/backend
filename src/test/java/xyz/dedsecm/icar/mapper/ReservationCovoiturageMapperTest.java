@@ -55,5 +55,14 @@ class ReservationCovoiturageMapperTest {
         assertEquals(LocalDate.of(2025, 6, 19), entity.getDateReservation());
         assertEquals(99, entity.getUtilisateurId());
     }
-}
 
+    @Test
+    void testToDTONull() {
+        assertNull(mapper.toDTO(null));
+    }
+
+    @Test
+    void testToEntityNull() {
+        assertNull(mapper.toEntity(null));
+    }
+}

@@ -64,5 +64,100 @@ class UserServiceTest {
         verify(passwordEncoder).encode(dto.getPassword());
         verify(userRepository).save(any(User.class));
     }
-}
 
+    @Test
+    void testGetUserByIdFound() {
+        User user = new User(1L, "mail@test.com", "Nom", "Prenom", "user", "pass", "adr", Role.USER, false, null, null, false, null);
+        when(userRepository.findById(1L)).thenReturn(java.util.Optional.of(user));
+        UserDTO dto = userService.getUserById(1L);
+        assertEquals(user.getEmail(), dto.getEmail());
+    }
+
+    @Test
+    void testGetUserByIdNotFound() {
+        when(userRepository.findById(2L)).thenReturn(java.util.Optional.empty());
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> userService.getUserById(2L));
+        assertTrue(ex.getMessage().contains("Utilisateur non trouvé"));
+    }
+
+    @Test
+    void testGetUserByEmailFound() {
+        User user = new User(1L, "mail@test.com", "Nom", "Prenom", "user", "pass", "adr", Role.USER, false, null, null, false, null);
+        when(userRepository.findByEmail("mail@test.com")).thenReturn(java.util.Optional.of(user));
+        UserDTO dto = userService.getUserByEmail("mail@test.com");
+        assertEquals(user.getEmail(), dto.getEmail());
+    }
+
+    @Test
+    void testGetUserByEmailNotFound() {
+        when(userRepository.findByEmail("notfound@mail.com")).thenReturn(java.util.Optional.empty());
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> userService.getUserByEmail("notfound@mail.com"));
+        assertTrue(ex.getMessage().contains("Utilisateur non trouvé"));
+    }
+
+    @Test
+    void testGetUserByUsernameFound() {
+        User user = new User(1L, "mail@test.com", "Nom", "Prenom", "user", "pass", "adr", Role.USER, false, null, null, false, null);
+        when(userRepository.findByUsername("user")).thenReturn(java.util.Optional.of(user));
+        UserDTO dto = userService.getUserByUsername("user");
+        assertEquals(user.getUsername(), dto.getUsername());
+    }
+
+    @Test
+    void testGetUserByUsernameNotFound() {
+        when(userRepository.findByUsername("notfound")).thenReturn(java.util.Optional.empty());
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> userService.getUserByUsername("notfound"));
+        assertTrue(ex.getMessage().contains("Utilisateur non trouvé"));
+    }
+
+    @Test
+    void testUpdateUserFoundWithPassword() {
+        User user = new User(1L, "mail@test.com", "Nom", "Prenom", "user", "pass", "adr", Role.USER, false, null, null, false, null);
+        UserDTO dto = new UserDTO(1L, "new@mail.com", "Nom2", "Prenom2", "user2", "newpass", "adr2", Role.ADMIN, true, "raison", java.time.LocalTime.NOON, true, 2L);
+        when(userRepository.findById(1L)).thenReturn(java.util.Optional.of(user));
+        when(passwordEncoder.encode("newpass")).thenReturn("encoded");
+        when(userRepository.save(any())).thenReturn(user);
+        UserDTO result = userService.updateUser(1L, dto);
+        assertEquals("new@mail.com", result.getEmail());
+    }
+
+    @Test
+    void testUpdateUserFoundWithoutPassword() {
+        User user = new User(1L, "mail@test.com", "Nom", "Prenom", "user", "pass", "adr", Role.USER, false, null, null, false, null);
+        UserDTO dto = new UserDTO(1L, "new@mail.com", "Nom2", "Prenom2", "user2", "", "adr2", Role.ADMIN, true, "raison", java.time.LocalTime.NOON, true, 2L);
+        when(userRepository.findById(1L)).thenReturn(java.util.Optional.of(user));
+        when(userRepository.save(any())).thenReturn(user);
+        UserDTO result = userService.updateUser(1L, dto);
+        assertEquals("new@mail.com", result.getEmail());
+    }
+
+    @Test
+    void testUpdateUserNotFound() {
+        when(userRepository.findById(2L)).thenReturn(java.util.Optional.empty());
+        UserDTO dto = new UserDTO();
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> userService.updateUser(2L, dto));
+        assertTrue(ex.getMessage().contains("Utilisateur non trouvé"));
+    }
+
+    @Test
+    void testDeleteUser() {
+        userService.deleteUser(1L);
+        verify(userRepository).deleteById(1L);
+    }
+
+    @Test
+    void testBanUserFound() {
+        User user = new User(1L, "mail@test.com", "Nom", "Prenom", "user", "pass", "adr", Role.USER, false, null, null, false, null);
+        when(userRepository.findById(1L)).thenReturn(java.util.Optional.of(user));
+        when(userRepository.save(any())).thenReturn(user);
+        UserDTO result = userService.banUser(1L, "raison", java.time.LocalTime.NOON);
+        assertTrue(result.getBanni());
+    }
+
+    @Test
+    void testBanUserNotFound() {
+        when(userRepository.findById(2L)).thenReturn(java.util.Optional.empty());
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> userService.banUser(2L, "raison", java.time.LocalTime.NOON));
+        assertTrue(ex.getMessage().contains("Utilisateur non trouvé"));
+    }
+}

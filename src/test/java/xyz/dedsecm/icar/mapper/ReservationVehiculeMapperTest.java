@@ -63,5 +63,14 @@ class ReservationVehiculeMapperTest {
         assertEquals(99, entity.getUtilisateurId());
         assertEquals(3, entity.getVehiculeId());
     }
-}
 
+    @Test
+    void testToDTONull() {
+        assertNull(mapper.toDTO(null));
+    }
+
+    @Test
+    void testToEntityNull() {
+        assertNull(mapper.toEntity(null));
+    }
+}
