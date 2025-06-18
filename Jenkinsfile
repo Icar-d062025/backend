@@ -2,50 +2,62 @@ pipeline {
     agent any
 
     tools {
-        maven 'maven'  // Nom de l'installation Maven configurée dans Jenkins
-        jdk 'JDK21'    // Nom de l'installation JDK configurée dans Jenkins
+        maven 'maven'
+        jdk 'JDK21'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                checkout scm  // Utilise la configuration SCM de Jenkins plutôt qu'une URL en dur
+                echo 'Checkout du code source...'
+                checkout scm
             }
         }
 
         stage('Build & Test') {
             steps {
+                echo 'Compilation et tests unitaires...'
                 sh 'mvn clean test'
+            }
+            post {
+                always {
+                    junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
+                }
             }
         }
 
         stage('SonarQube Analysis') {
+            options {
+                timeout(time: 5, unit: 'MINUTES')
+            }
             steps {
-                withSonarQubeEnv('SonarQube') {  // Nom de l'installation SonarQube configurée dans Jenkins
-                    sh 'mvn sonar:sonar'
+                echo 'Analyse SonarQube en cours...'
+                withSonarQubeEnv(installationName: 'SonarQube') {
+                    sh 'mvn sonar:sonar -Dsonar.host.url=https://sonarqube.dedsecm.xyz -Dsonar.projectKey=vroomvroomcar -Dsonar.projectName="VroomVroomCar" -Dsonar.java.source=21 -Dproject.build.sourceEncoding=UTF-8 -Dfile.encoding=UTF-8'
                 }
             }
         }
 
-        stage("Quality Gate") {
+        stage('Quality Gate') {
+            options {
+                timeout(time: 5, unit: 'MINUTES')
+            }
             steps {
-                timeout(time: 1, unit: 'HOURS') {
-                    waitForQualityGate abortPipeline: true
-                }
+                echo 'Vérification de la Quality Gate...'
+                waitForQualityGate(abortPipeline: true)
             }
         }
     }
 
     post {
-        always {
-            junit '**/target/surefire-reports/*.xml'  // Publication des résultats de test
-            recordCoverage(tools: [[parser: 'JACOCO']])  // Publication des rapports de couverture JaCoCo
-        }
         success {
-            echo 'Pipeline exécutée avec succès'
+            echo 'Le build, les tests et l\'analyse SonarQube se sont déroulés avec succès.'
         }
         failure {
-            echo 'La pipeline a échoué'
+            echo 'Une erreur est survenue durant le pipeline.'
+        }
+        always {
+            echo 'Fin du pipeline Jenkins.'
         }
     }
 }
