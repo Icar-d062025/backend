@@ -72,7 +72,7 @@ pipeline {
             }
             steps {
                 echo 'Création automatique d\'une Pull Request vers main...'
-                withCredentials([string(credentialsId: 'Github', variable: 'GITHUB_TOKEN')]) {
+                withCredentials([string(credentialsId: 'b440a0dc-537d-489f-a303-d00dad66fbba', variable: 'GITHUB_TOKEN')]) {
                     sh '''
                         PR_RESPONSE=$(curl -s -X POST \
                         -H "Authorization: token ${GITHUB_TOKEN}" \
