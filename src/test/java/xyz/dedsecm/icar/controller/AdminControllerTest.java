@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.security.test.context.support.WithMockUser;
 
 /**
  * Tests unitaires pour le contrôleur AdminController.
@@ -21,10 +22,10 @@ class AdminControllerTest {
      * Vérifie que l'endpoint /api/admin/hello retourne bien le message attendu.
      */
     @Test
+    @WithMockUser(roles = "ADMIN")
     void helloAdmin_shouldReturnHelloAdminMessage() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/admin/hello"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("Hello Admin!"));
     }
 }
-

@@ -90,14 +90,20 @@ public class ReservationCovoiturageDTO {
     }
 
     /**
-     * Retourne le libellé du statut
-     * @return le libellé correspondant au statut
+     * Retourne le libellé du statut de la réservation.
+     * <ul>
+     *   <li>0 : En attente</li>
+     *   <li>1 : Confirmée</li>
+     *   <li>2 : Annulée</li>
+     *   <li>3 : Terminée</li>
+     *   <li>autre ou null : Inconnu</li>
+     * </ul>
+     * @return le libellé correspondant au statut, ou "Inconnu" si le statut n'est pas reconnu ou null
      */
     public String getStatutLibelle() {
         if (statut == null) {
-            return "Statut inconnu";
+            return "Inconnu";
         }
-
         switch (statut) {
             case 0:
                 return "En attente";
@@ -108,7 +114,7 @@ public class ReservationCovoiturageDTO {
             case 3:
                 return "Terminée";
             default:
-                return "Statut inconnu";
+                return "Inconnu";
         }
     }
 
@@ -138,11 +144,14 @@ public class ReservationCovoiturageDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ReservationCovoiturageDTO that = (ReservationCovoiturageDTO) o;
-        return id != null && id.equals(that.id);
+        return java.util.Objects.equals(id, that.id)
+                && java.util.Objects.equals(statut, that.statut)
+                && java.util.Objects.equals(dateReservation, that.dateReservation)
+                && java.util.Objects.equals(utilisateurId, that.utilisateurId);
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        return java.util.Objects.hash(id, statut, dateReservation, utilisateurId);
     }
 }

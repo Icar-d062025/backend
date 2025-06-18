@@ -14,8 +14,10 @@ public class CovoiturageMapper {
 
     /**
      * Constructeur privé pour empêcher l'instanciation de la classe utilitaire.
+     * Cette classe ne doit être utilisée que via ses méthodes statiques.
      */
-    public CovoiturageMapper() {
+    private CovoiturageMapper() {
+        throw new UnsupportedOperationException("Cette classe utilitaire ne doit pas être instanciée");
     }
 
     /**

@@ -78,6 +78,33 @@ public class Covoiturage {
         this.statut = statut;
     }
 
+    /**
+     * Constructeur de confort pour Covoiturage.
+     * Utilisez un builder ou un objet de paramètres pour éviter d'avoir plus de 7 paramètres.
+     */
+    public static class Builder {
+        private LocalDateTime dateHeureDepart;
+        private LocalDateTime dateHeureArrivee;
+        private String adresseDepart;
+        private String adresseArrivee;
+        private Integer nbPlaces;
+        private Integer nbRestant;
+        private Integer distance;
+        private StatutCovoiturage statut;
+
+        public Builder dateHeureDepart(LocalDateTime dateHeureDepart) { this.dateHeureDepart = dateHeureDepart; return this; }
+        public Builder dateHeureArrivee(LocalDateTime dateHeureArrivee) { this.dateHeureArrivee = dateHeureArrivee; return this; }
+        public Builder adresseDepart(String adresseDepart) { this.adresseDepart = adresseDepart; return this; }
+        public Builder adresseArrivee(String adresseArrivee) { this.adresseArrivee = adresseArrivee; return this; }
+        public Builder nbPlaces(Integer nbPlaces) { this.nbPlaces = nbPlaces; return this; }
+        public Builder nbRestant(Integer nbRestant) { this.nbRestant = nbRestant; return this; }
+        public Builder distance(Integer distance) { this.distance = distance; return this; }
+        public Builder statut(StatutCovoiturage statut) { this.statut = statut; return this; }
+        public Covoiturage build() {
+            return new Covoiturage(dateHeureDepart, dateHeureArrivee, adresseDepart, adresseArrivee, nbPlaces, nbRestant, distance, statut);
+        }
+    }
+
     /***
      * Méthode calculée pour la durée du trajet
      * @return null

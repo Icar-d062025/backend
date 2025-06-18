@@ -66,12 +66,12 @@ public class ReservationVehiculeMapper {
      */
     public List<ReservationVehiculeDTO> toDTOList(List<ReservationVehicule> entities) {
         if (entities == null) {
-            return null;
+            return List.of();
         }
 
         return entities.stream()
                 .map(this::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -81,12 +81,12 @@ public class ReservationVehiculeMapper {
      */
     public List<ReservationVehicule> toEntityList(List<ReservationVehiculeDTO> dtos) {
         if (dtos == null) {
-            return null;
+            return List.of();
         }
 
         return dtos.stream()
                 .map(this::toEntity)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
