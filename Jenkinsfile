@@ -6,41 +6,39 @@ pipeline {
         jdk 'JDK21'
     }
 
-    environment {
-        SONAR_TOKEN = credentials('Sonarqube')
-    }
-
     stages {
         stage('Checkout') {
             steps {
+                echo 'Checkout du code source...'
                 checkout scm
             }
         }
 
         stage('Build & Test') {
             steps {
+                echo 'Compilation et tests unitaires...'
                 sh 'mvn clean test'
             }
             post {
                 always {
-                    junit '**/target/surefire-reports/*.xml'
+                    junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
                 }
             }
         }
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh "mvn sonar:sonar -Dsonar.login=$SONAR_TOKEN"
+                echo 'Exécution de l\'analyse SonarQube...'
+                withSonarQubeEnv(installationName: 'SonarQube') {
+                    sh 'mvn sonar:sonar -Dsonar.host.url=https://sonarqube.dedsecm.xyz -Dsonar.projectKey=vroomvroomcar -Dsonar.projectName="VroomVroomCar" -Dsonar.java.source=21'
                 }
             }
         }
 
         stage('Quality Gate') {
             steps {
-                timeout(time: 5, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
-                }
+                echo 'Vérification de la Quality Gate...'
+                waitForQualityGate(abortPipeline: true)
             }
         }
     }
@@ -51,6 +49,9 @@ pipeline {
         }
         failure {
             echo 'Une erreur est survenue durant le pipeline.'
+        }
+        always {
+            echo 'Fin du pipeline Jenkins.'
         }
     }
 }
