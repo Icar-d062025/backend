@@ -30,7 +30,7 @@ pipeline {
             steps {
                 echo 'Analyse SonarQube en cours...'
                 withSonarQubeEnv(installationName: 'SonarQube') {
-                    sh 'mvn sonar:sonar -Dsonar.host.url=https://sonarqube.dedsecm.xyz -Dsonar.projectKey=vroomvroomcar -Dsonar.projectName="VroomVroomCar" -Dsonar.java.source=21'
+                    sh 'mvn sonar:sonar -Dsonar.host.url=https://sonarqube.dedsecm.xyz -Dsonar.projectKey=vroomvroomcar -Dsonar.projectName="VroomVroomCar" -Dsonar.java.source=21 -Dproject.build.sourceEncoding=UTF-8 -Dfile.encoding=UTF-8'
                 }
             }
         }
