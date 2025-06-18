@@ -62,12 +62,12 @@ public class ReservationCovoiturageMapper {
      */
     public List<ReservationCovoiturageDTO> toDTOList(List<ReservationCovoiturage> entities) {
         if (entities == null) {
-            return null;
+            return List.of();
         }
 
         return entities.stream()
                 .map(this::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -77,12 +77,12 @@ public class ReservationCovoiturageMapper {
      */
     public List<ReservationCovoiturage> toEntityList(List<ReservationCovoiturageDTO> dtos) {
         if (dtos == null) {
-            return null;
+            return List.of();
         }
 
         return dtos.stream()
                 .map(this::toEntity)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
