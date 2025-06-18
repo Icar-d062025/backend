@@ -69,7 +69,7 @@ public class CovoiturageService {
      * Lance une IllegalArgumentException en cas de règle non respectée.
      * @param dto le DTO à valider
      */
-    private void validateCovoiturageDTO(CovoiturageDTO dto) {
+    void validateCovoiturageDTO(CovoiturageDTO dto) {
 
         if (dto.getDateHeureDepart() == null || dto.getDateHeureArrivee() == null) {
             throw new IllegalArgumentException("Les dates de départ et d'arrivée sont obligatoires");
@@ -112,3 +112,4 @@ public class CovoiturageService {
         }
     }
 }
+

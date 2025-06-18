@@ -23,11 +23,11 @@ public class UserService {
 
     /** Repository pour l'accès aux données des utilisateurs. */
     @Autowired
-    private UserRepository userRepository;
+    UserRepository userRepository;
 
     /** Service d'encodage des mots de passe. */
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    PasswordEncoder passwordEncoder;
 
     /**
      * Récupère la liste de tous les utilisateurs sous forme de DTO.
