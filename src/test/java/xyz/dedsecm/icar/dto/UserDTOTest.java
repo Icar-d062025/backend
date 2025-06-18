@@ -80,5 +80,18 @@ class UserDTOTest {
         assertEquals(dto1, dto2);
         assertEquals(dto1.hashCode(), dto2.hashCode());
     }
-}
 
+    /**
+     * Teste les branches non couvertes de equals (null, autre classe, self).
+     */
+    @Test
+    void testEqualsBranches() {
+        UserDTO dto = new UserDTO(5L, "b@mail.com", "B", "C", "bc", "pw2", "adr2", Role.USER, false, null, LocalTime.of(0,0), false, null);
+        // Comparaison avec null
+        assertNotEquals(dto, null);
+        // Comparaison avec une autre classe
+        assertNotEquals(dto, "une string");
+        // Comparaison avec lui-même
+        assertEquals(dto, dto);
+    }
+}
