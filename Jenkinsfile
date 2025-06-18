@@ -72,10 +72,12 @@ pipeline {
             }
             steps {
                 echo 'Création automatique d\'une Pull Request vers main...'
-                withCredentials([string(credentialsId: 'b440a0dc-537d-489f-a303-d00dad66fbba', variable: 'GITHUB_TOKEN')]) {
+                withCredentials([usernamePassword(credentialsId: 'b440a0dc-537d-489f-a303-d00dad66fbba',
+                                                   usernameVariable: 'GITHUB_USER',
+                                                   passwordVariable: 'GITHUB_PASS')]) {
                     sh '''
                         PR_RESPONSE=$(curl -s -X POST \
-                        -H "Authorization: token ${GITHUB_TOKEN}" \
+                        -u "${GITHUB_USER}:${GITHUB_PASS}" \
                         -H "Accept: application/vnd.github.v3+json" \
                         https://api.github.com/repos/d022025filsrouge/backend/pulls \
                         -d '{
@@ -95,7 +97,6 @@ pipeline {
                 }
             }
         }
-    }
 
     post {
         success {
