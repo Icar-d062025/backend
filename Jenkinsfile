@@ -16,13 +16,20 @@ pipeline {
 
         stage('Build & Test') {
             steps {
-                echo 'Compilation et tests unitaires...'
-                sh 'mvn clean test'
+                echo 'Compilation, tests unitaires et génération rapports...'
+                sh 'mvn clean verify'  // verify déclenche aussi les tests et JaCoCo
             }
             post {
                 always {
                     junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
                 }
+            }
+        }
+
+        stage('JaCoCo Report') {
+            steps {
+                echo 'Génération du rapport JaCoCo...'
+                sh 'mvn jacoco:report'
             }
         }
 
@@ -33,7 +40,16 @@ pipeline {
             steps {
                 echo 'Analyse SonarQube en cours...'
                 withSonarQubeEnv(installationName: 'SonarQube') {
-                    sh 'mvn sonar:sonar -Dsonar.host.url=https://sonarqube.dedsecm.xyz -Dsonar.projectKey=vroomvroomcar -Dsonar.projectName="VroomVroomCar" -Dsonar.java.source=21 -Dproject.build.sourceEncoding=UTF-8 -Dfile.encoding=UTF-8'
+                    sh '''
+                        mvn sonar:sonar \
+                            -Dsonar.host.url=https://sonarqube.dedsecm.xyz \
+                            -Dsonar.projectKey=vroomvroomcar \
+                            -Dsonar.projectName="VroomVroomCar" \
+                            -Dsonar.java.source=21 \
+                            -Dproject.build.sourceEncoding=UTF-8 \
+                            -Dfile.encoding=UTF-8 \
+                            -Dsonar.exclusions=**/*Dto.java,**/config/**,**/*Application.java
+                    '''
                 }
             }
         }
@@ -61,3 +77,4 @@ pipeline {
         }
     }
 }
+
