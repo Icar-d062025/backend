@@ -7,6 +7,7 @@ import xyz.dedsecm.icar.model.StatutCovoiturage;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.lang.reflect.InvocationTargetException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -54,5 +55,18 @@ class CovoiturageMapperTest {
         assertEquals(2, covoiturage.getNbRestant());
         assertEquals(450, covoiturage.getDistance());
         assertEquals(StatutCovoiturage.EN_COURS, covoiturage.getStatut());
+    }
+
+    /**
+     * Teste le constructeur privé de CovoiturageMapper.
+     */
+    @Test
+    void testPrivateConstructor() throws Exception {
+        var constructor = CovoiturageMapper.class.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        Exception exception = assertThrows(InvocationTargetException.class, constructor::newInstance);
+        assertNotNull(exception.getCause());
+        assertTrue(exception.getCause() instanceof UnsupportedOperationException);
+        assertEquals("Cette classe utilitaire ne doit pas être instanciée", exception.getCause().getMessage());
     }
 }

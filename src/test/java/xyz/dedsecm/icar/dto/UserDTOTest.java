@@ -88,9 +88,9 @@ class UserDTOTest {
     void testEqualsBranches() {
         UserDTO dto = new UserDTO(5L, "b@mail.com", "B", "C", "bc", "pw2", "adr2", Role.USER, false, null, LocalTime.of(0,0), false, null);
         // Comparaison avec null
-        assertNotEquals(dto, null);
+        assertNotEquals(null, dto);
         // Comparaison avec une autre classe
-        assertNotEquals(dto, "une string");
+        assertNotEquals("une string", dto);
         // Comparaison avec lui-même
         assertEquals(dto, dto);
     }
