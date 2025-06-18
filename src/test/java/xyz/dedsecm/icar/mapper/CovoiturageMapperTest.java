@@ -33,7 +33,7 @@ class CovoiturageMapperTest {
         assertEquals("Lyon", dto.getAdresseArrivee());
         assertEquals(4, dto.getNbPlaces());
         assertEquals(2, dto.getNbRestant());
-        assertEquals(450.0, Optional.ofNullable(dto.getDistance()));
+        assertEquals(450, dto.getDistance());
         assertEquals(StatutCovoiturage.EN_COURS, dto.getStatut());
     }
 
@@ -52,8 +52,7 @@ class CovoiturageMapperTest {
         assertEquals("Lyon", covoiturage.getAdresseArrivee());
         assertEquals(4, covoiturage.getNbPlaces());
         assertEquals(2, covoiturage.getNbRestant());
-        assertEquals(450.0, Optional.ofNullable(covoiturage.getDistance()));
+        assertEquals(450, covoiturage.getDistance());
         assertEquals(StatutCovoiturage.EN_COURS, covoiturage.getStatut());
     }
 }
-

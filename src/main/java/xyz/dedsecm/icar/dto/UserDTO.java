@@ -65,4 +65,29 @@ public class UserDTO {
 
     /** Identifiant du véhicule personnel de l'utilisateur, si applicable. */
     private Long vehiculeId;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDTO userDTO = (UserDTO) o;
+        return java.util.Objects.equals(id, userDTO.id)
+                && java.util.Objects.equals(email, userDTO.email)
+                && java.util.Objects.equals(nom, userDTO.nom)
+                && java.util.Objects.equals(prenom, userDTO.prenom)
+                && java.util.Objects.equals(username, userDTO.username)
+                && java.util.Objects.equals(password, userDTO.password)
+                && java.util.Objects.equals(adresse, userDTO.adresse)
+                && role == userDTO.role
+                && java.util.Objects.equals(banni, userDTO.banni)
+                && java.util.Objects.equals(raisonBanni, userDTO.raisonBanni)
+                && java.util.Objects.equals(dureeBanni, userDTO.dureeBanni)
+                && java.util.Objects.equals(vehiculePerso, userDTO.vehiculePerso)
+                && java.util.Objects.equals(vehiculeId, userDTO.vehiculeId);
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(id, email, nom, prenom, username, password, adresse, role, banni, raisonBanni, dureeBanni, vehiculePerso, vehiculeId);
+    }
 }
