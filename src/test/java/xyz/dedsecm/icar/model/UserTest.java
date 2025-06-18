@@ -1,72 +1,90 @@
 package xyz.dedsecm.icar.model;
 
 import org.junit.jupiter.api.Test;
-
 import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Classe de test unitaire pour l'entité User.
- * <p>
- * Vérifie la création, l'accès aux attributs et les méthodes utilitaires de la classe User.
- * </p>
- */
 class UserTest {
 
-    /**
-     * Teste la création d'un utilisateur et l'accès à ses attributs.
-     */
     @Test
-    void testCreationEtAccesseurs() {
-        User user = new User(1L, "test@mail.com", "Dupont", "Jean", "jdupont", "secret", "1 rue de Paris", Role.USER, false, null, LocalTime.of(0,0), true, 10L);
+    void testAllArgsConstructorAndGettersSetters() {
+        User user = new User(1L, "test@mail.com", "Doe", "John", "johndoe", "password123", "1 rue de Paris", Role.ADMIN, true, "Spam", LocalTime.of(1, 30), true, 42L);
         assertEquals(1L, user.getId());
         assertEquals("test@mail.com", user.getEmail());
-        assertEquals("Dupont", user.getNom());
-        assertEquals("Jean", user.getPrenom());
-        assertEquals("jdupont", user.getUsername());
-        assertEquals("secret", user.getPassword());
+        assertEquals("Doe", user.getNom());
+        assertEquals("John", user.getPrenom());
+        assertEquals("johndoe", user.getUsername());
+        assertEquals("password123", user.getPassword());
         assertEquals("1 rue de Paris", user.getAdresse());
-        assertEquals(Role.USER, user.getRole());
-        assertFalse(user.getBanni());
-        assertNull(user.getRaisonBanni());
-        assertEquals(LocalTime.of(0,0), user.getDureeBanni());
+        assertEquals(Role.ADMIN, user.getRole());
+        assertTrue(user.getBanni());
+        assertEquals("Spam", user.getRaisonBanni());
+        assertEquals(LocalTime.of(1, 30), user.getDureeBanni());
         assertTrue(user.getVehiculePerso());
-        assertEquals(10L, user.getVehiculeId());
+        assertEquals(42L, user.getVehiculeId());
     }
 
-    /**
-     * Teste la modification des attributs après création.
-     */
+    @Test
+    void testNoArgsConstructor() {
+        User user = new User();
+        assertNull(user.getId());
+        assertNull(user.getEmail());
+        assertNull(user.getNom());
+        assertNull(user.getPrenom());
+        assertNull(user.getUsername());
+        assertNull(user.getPassword());
+        assertNull(user.getAdresse());
+        assertNull(user.getRole());
+        assertNull(user.getBanni());
+        assertNull(user.getRaisonBanni());
+        assertNull(user.getDureeBanni());
+        assertNull(user.getVehiculePerso());
+        assertNull(user.getVehiculeId());
+    }
+
+    @Test
+    void testCustomConstructor() {
+        User user = new User("mail@mail.com", "Nom", "Prenom", "pass", "userName");
+        assertEquals("mail@mail.com", user.getEmail());
+        assertEquals("Nom", user.getNom());
+        assertEquals("Prenom", user.getPrenom());
+        assertEquals("pass", user.getPassword());
+        assertEquals("userName", user.getUsername());
+        assertEquals(Role.USER, user.getRole());
+        assertFalse(user.getBanni());
+        assertFalse(user.getVehiculePerso());
+    }
+
     @Test
     void testSetters() {
         User user = new User();
         user.setId(2L);
-        user.setEmail("user2@mail.com");
-        user.setNom("Martin");
-        user.setPrenom("Paul");
-        user.setUsername("pmartin");
-        user.setPassword("pass2");
-        user.setAdresse("2 rue de Lyon");
-        user.setRole(Role.ADMIN);
-        user.setBanni(true);
-        user.setRaisonBanni("fraude");
-        user.setDureeBanni(LocalTime.of(1,30));
+        user.setEmail("a@b.com");
+        user.setNom("N");
+        user.setPrenom("P");
+        user.setUsername("u");
+        user.setPassword("pw");
+        user.setAdresse("adr");
+        user.setRole(Role.USER);
+        user.setBanni(false);
+        user.setRaisonBanni("none");
+        user.setDureeBanni(LocalTime.of(0, 0));
         user.setVehiculePerso(false);
-        user.setVehiculeId(null);
+        user.setVehiculeId(99L);
         assertEquals(2L, user.getId());
-        assertEquals("user2@mail.com", user.getEmail());
-        assertEquals("Martin", user.getNom());
-        assertEquals("Paul", user.getPrenom());
-        assertEquals("pmartin", user.getUsername());
-        assertEquals("pass2", user.getPassword());
-        assertEquals("2 rue de Lyon", user.getAdresse());
-        assertEquals(Role.ADMIN, user.getRole());
-        assertTrue(user.getBanni());
-        assertEquals("fraude", user.getRaisonBanni());
-        assertEquals(LocalTime.of(1,30), user.getDureeBanni());
+        assertEquals("a@b.com", user.getEmail());
+        assertEquals("N", user.getNom());
+        assertEquals("P", user.getPrenom());
+        assertEquals("u", user.getUsername());
+        assertEquals("pw", user.getPassword());
+        assertEquals("adr", user.getAdresse());
+        assertEquals(Role.USER, user.getRole());
+        assertFalse(user.getBanni());
+        assertEquals("none", user.getRaisonBanni());
+        assertEquals(LocalTime.of(0, 0), user.getDureeBanni());
         assertFalse(user.getVehiculePerso());
-        assertNull(user.getVehiculeId());
+        assertEquals(99L, user.getVehiculeId());
     }
 }
 
