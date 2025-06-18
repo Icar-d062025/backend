@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     tools {
-        maven 'maven'   // Nom exact défini dans "Global Tool Configuration"
-        jdk 'JDK21'     // Nom de ton JDK 21 dans Jenkins
+        maven 'maven'       // Nom exact défini dans "Global Tool Configuration"
+        jdk 'JDK21'         // Nom du JDK 21 dans Jenkins
     }
 
     environment {
@@ -21,48 +21,35 @@ pipeline {
             steps {
                 sh 'mvn clean test'
             }
+            post {
+                always {
+                    junit '**/target/surefire-reports/*.xml'
+                }
+            }
         }
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh 'mvn verify sonar:sonar'
-                }
+                sh "mvn sonar:sonar -Dsonar.login=$SONAR_TOKEN"
             }
         }
 
         stage('Quality Gate') {
             steps {
-                script {
-                    try {
-                        timeout(time: 10, unit: 'MINUTES') {
-                            // Si cette étape échoue (ex: Quality Gate non respecté),
-                            // elle marque le pipeline comme échoué à cause de abortPipeline: true
-                            waitForQualityGate abortPipeline: true
-                        }
-                    } catch (e) {
-                        echo "Impossible de récupérer le résultat du Quality Gate, mais l'analyse Sonar est bien lancée."
-                        // Même avec ce catch, si waitForQualityGate a déjà marqué le build comme FAILURE,
-                        // ce statut persiste.
-                    }
+                timeout(time: 5, unit: 'MINUTES') {
+                    // Attend la QualityGate et interrompt le pipeline en cas d'échec
+                    waitForQualityGate abortPipeline: true
                 }
             }
-        } // Fin du stage 'Quality Gate'
-    } // <<<< Accolade fermante ajoutée ici pour clore le bloc 'stages'
+        }
+    }
 
     post {
-        always {
-            node('docker-agent') {  // Utiliser le nom exact de l'agent dans les logs
-                junit '**/target/surefire-reports/*.xml'
-                // Correction: Spécifier le pattern pour localiser le rapport JaCoCo
-                recordCoverage(tools: [[parser: 'JACOCO', pattern: '**/target/site/jacoco/jacoco.xml']])
-            }
-        }
         success {
-            echo '🎉 Pipeline exécutée avec succès !'
+            echo 'Le build, les tests et l\'analyse SonarQube se sont déroulés avec succès.'
         }
         failure {
-            echo '💥 La pipeline a échoué.'
+            echo 'Une erreur est survenue durant le pipeline.'
         }
     }
 }
