@@ -12,10 +12,10 @@
     </parent>
 
     <groupId>xyz.dedsecm</groupId>
-    <artifactId>vroomvroomcar</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>vroomvroomcar</name>
-    <description>vroomvroomcar</description>
+    <artifactId>icar</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <name>icar</name>
+    <description>icar</description>
     <url/>
 
     <licenses>
@@ -163,5 +163,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
