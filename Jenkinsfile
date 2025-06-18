@@ -17,7 +17,7 @@ pipeline {
         stage('Build & Test') {
             steps {
                 echo 'Compilation, tests unitaires et génération rapports...'
-                sh 'mvn clean verify'  // verify déclenche aussi les tests et JaCoCo
+                sh 'mvn clean verify'
             }
             post {
                 always {
@@ -63,6 +63,38 @@ pipeline {
                 waitForQualityGate(abortPipeline: true)
             }
         }
+
+        stage('Create Pull Request') {
+            when {
+                expression {
+                    return env.BRANCH_NAME != 'main' && currentBuild.resultIsBetterOrEqualTo('SUCCESS')
+                }
+            }
+            steps {
+                echo 'Création automatique d\'une Pull Request vers main...'
+                withCredentials([string(credentialsId: 'Github', variable: 'GITHUB_TOKEN')]) {
+                    sh '''
+                        PR_RESPONSE=$(curl -s -X POST \
+                        -H "Authorization: token ${GITHUB_TOKEN}" \
+                        -H "Accept: application/vnd.github.v3+json" \
+                        https://api.github.com/repos/d022025filsrouge/backend/pulls \
+                        -d '{
+                            "title": "Merge automatique de la branche '"${BRANCH_NAME}"' vers main",
+                            "body": "Cette PR a été créée automatiquement par Jenkins après validation des tests et de la Quality Gate SonarQube.",
+                            "head": "'"${BRANCH_NAME}"'",
+                            "base": "main"
+                        }')
+
+                        PR_URL=$(echo $PR_RESPONSE | grep -o '"html_url": "[^"]*"' | grep -o 'https://[^"]*' | head -1)
+                        if [ -n "$PR_URL" ]; then
+                            echo "Pull Request créée avec succès: $PR_URL"
+                        else
+                            echo "Erreur lors de la création de la PR: $PR_RESPONSE"
+                        fi
+                    '''
+                }
+            }
+        }
     }
 
     post {
@@ -77,4 +109,3 @@ pipeline {
         }
     }
 }
-
