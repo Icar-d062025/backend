@@ -52,13 +52,14 @@ class ReservationCovoiturageDTOTest {
      */
     @Test
     void testGetStatutLibelle() {
-        assertEquals("En attente", new ReservationCovoiturageDTO(0, 1).getStatutLibelle());
-        assertEquals("Confirmée", new ReservationCovoiturageDTO(1, 1).getStatutLibelle());
-        assertEquals("Annulée", new ReservationCovoiturageDTO(2, 1).getStatutLibelle());
-        assertEquals("Terminée", new ReservationCovoiturageDTO(3, 1).getStatutLibelle());
-        assertEquals("Statut inconnu", new ReservationCovoiturageDTO(99, 1).getStatutLibelle());
-        ReservationCovoiturageDTO inconnu = new ReservationCovoiturageDTO(null, 1);
-        assertEquals("Statut inconnu", inconnu.getStatutLibelle());
+        ReservationCovoiturageDTO attente = new ReservationCovoiturageDTO(0, 1);
+        ReservationCovoiturageDTO conf = new ReservationCovoiturageDTO(1, 2);
+        ReservationCovoiturageDTO annulee = new ReservationCovoiturageDTO(2, 3);
+        ReservationCovoiturageDTO inconnu = new ReservationCovoiturageDTO(99, 4);
+        assertEquals("En attente", attente.getStatutLibelle());
+        assertEquals("Confirmée", conf.getStatutLibelle());
+        assertEquals("Annulée", annulee.getStatutLibelle());
+        assertEquals("Inconnu", inconnu.getStatutLibelle());
     }
 
     /**
@@ -66,11 +67,12 @@ class ReservationCovoiturageDTOTest {
      */
     @Test
     void testIsRecente() {
-        LocalDate now = LocalDate.now();
-        ReservationCovoiturageDTO recente = new ReservationCovoiturageDTO(1, now, 1);
-        ReservationCovoiturageDTO ancienne = new ReservationCovoiturageDTO(1, now.minusDays(10), 1);
+        ReservationCovoiturageDTO recente = new ReservationCovoiturageDTO(1, LocalDate.now(), 1);
+        ReservationCovoiturageDTO pasRecente = new ReservationCovoiturageDTO(1, LocalDate.now().minusDays(10), 1);
         assertTrue(recente.isRecente());
-        assertFalse(ancienne.isRecente());
+        assertFalse(pasRecente.isRecente());
+        ReservationCovoiturageDTO nullDate = new ReservationCovoiturageDTO(1, null, 1);
+        assertFalse(nullDate.isRecente());
     }
 
     /**
@@ -85,5 +87,41 @@ class ReservationCovoiturageDTOTest {
         assertEquals(dto1, dto2);
         assertNotNull(dto1.toString());
     }
-}
 
+    @Test
+    void testEqualsAndHashCode() {
+        ReservationCovoiturageDTO dto1 = new ReservationCovoiturageDTO(1, LocalDate.of(2025,6,18), 42);
+        dto1.setId(10);
+        ReservationCovoiturageDTO dto2 = new ReservationCovoiturageDTO(1, LocalDate.of(2025,6,18), 42);
+        dto2.setId(10);
+        assertEquals(dto1, dto2);
+        assertEquals(dto1.hashCode(), dto2.hashCode());
+        assertEquals(dto1, dto1);
+        assertNotEquals(dto1, null);
+        assertNotEquals(dto1, "string");
+        // Champs différents
+        ReservationCovoiturageDTO diff = new ReservationCovoiturageDTO(2, LocalDate.of(2025,6,18), 42);
+        diff.setId(10);
+        assertNotEquals(dto1, diff);
+        diff = new ReservationCovoiturageDTO(1, LocalDate.of(2025,6,19), 42);
+        diff.setId(10);
+        assertNotEquals(dto1, diff);
+        diff = new ReservationCovoiturageDTO(1, LocalDate.of(2025,6,18), 43);
+        diff.setId(10);
+        assertNotEquals(dto1, diff);
+        diff = new ReservationCovoiturageDTO(1, LocalDate.of(2025,6,18), 42);
+        diff.setId(11);
+        assertNotEquals(dto1, diff);
+    }
+
+    @Test
+    void testToString() {
+        ReservationCovoiturageDTO dto = new ReservationCovoiturageDTO(1, LocalDate.of(2025,6,18), 42);
+        dto.setId(10);
+        String str = dto.toString();
+        assertTrue(str.contains("id=10"));
+        assertTrue(str.contains("statut=1"));
+        assertTrue(str.contains("dateReservation=2025-06-18"));
+        assertTrue(str.contains("utilisateurId=42"));
+    }
+}

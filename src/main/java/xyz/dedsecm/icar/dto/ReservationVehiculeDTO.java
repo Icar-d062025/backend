@@ -97,16 +97,39 @@ public class ReservationVehiculeDTO {
                 '}';
     }
 
+    /**
+     * Vérifie l'égalité de deux objets ReservationVehiculeDTO.
+     * Deux réservations sont considérées comme égales si tous leurs champs principaux sont identiques :
+     * <ul>
+     *   <li>id</li>
+     *   <li>dateDebut</li>
+     *   <li>dateFin</li>
+     *   <li>dateCreation</li>
+     *   <li>utilisateurId</li>
+     *   <li>vehiculeId</li>
+     * </ul>
+     * @param o l'objet à comparer
+     * @return true si tous les champs sont identiques, false sinon
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ReservationVehiculeDTO that = (ReservationVehiculeDTO) o;
-        return id != null && id.equals(that.id);
+        return java.util.Objects.equals(id, that.id)
+                && java.util.Objects.equals(dateDebut, that.dateDebut)
+                && java.util.Objects.equals(dateFin, that.dateFin)
+                && java.util.Objects.equals(dateCreation, that.dateCreation)
+                && java.util.Objects.equals(utilisateurId, that.utilisateurId)
+                && java.util.Objects.equals(vehiculeId, that.vehiculeId);
     }
 
+    /**
+     * Calcule le hashCode de la réservation à partir de tous les champs principaux.
+     * @return le hashCode basé sur id, dateDebut, dateFin, dateCreation, utilisateurId et vehiculeId
+     */
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        return java.util.Objects.hash(id, dateDebut, dateFin, dateCreation, utilisateurId, vehiculeId);
     }
 }
