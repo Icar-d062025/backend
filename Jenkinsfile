@@ -28,9 +28,33 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                echo 'Exécution de l\'analyse SonarQube...'
+                echo 'Vérification et configuration du projet SonarQube...'
                 withSonarQubeEnv(installationName: 'SonarQube') {
-                    sh 'mvn sonar:sonar -Dsonar.host.url=https://sonarqube.dedsecm.xyz -Dsonar.projectKey=vroomvroomcar -Dsonar.projectName="VroomVroomCar" -Dsonar.java.source=21'
+                    script {
+                        def sonarUrl = 'https://sonarqube.dedsecm.xyz'
+                        def projectKey = 'vroomvroomcar'
+                        def projectName = 'VroomVroomCar'
+
+                        withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
+                            // Vérifier si le projet existe déjà
+                            def projectExists = sh(
+                                script: "curl -s -o /dev/null -w '%{http_code}' -u ${SONAR_TOKEN}: ${sonarUrl}/api/components/show?component=${projectKey}",
+                                returnStdout: true
+                            ).trim() == '200'
+
+                            // Si le projet n'existe pas, le créer
+                            if (!projectExists) {
+                                echo "Le projet ${projectName} n'existe pas dans SonarQube. Création en cours..."
+                                sh "curl -s -X POST -u ${SONAR_TOKEN}: '${sonarUrl}/api/projects/create?name=${projectName}&project=${projectKey}'"
+                                echo "Projet ${projectName} créé avec succès."
+                            } else {
+                                echo "Le projet ${projectName} existe déjà dans SonarQube."
+                            }
+                        }
+
+                        // Exécuter l'analyse SonarQube
+                        sh 'mvn sonar:sonar -Dsonar.host.url=https://sonarqube.dedsecm.xyz -Dsonar.projectKey=vroomvroomcar -Dsonar.projectName="VroomVroomCar" -Dsonar.java.source=21'
+                    }
                 }
             }
         }
