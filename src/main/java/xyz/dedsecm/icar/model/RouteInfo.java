@@ -13,7 +13,7 @@ public class RouteInfo {
     private double durationHours;
     private String geometry;
 
-    public RouteInfo(double distanceKm, int durationMinutes, double durationHours) {
+    public RouteInfo(double distanceKm, int durationMinutes) {
         this.distanceKm = distanceKm;
         this.durationMinutes = durationMinutes;
         this.durationHours = durationMinutes / 60.0;
