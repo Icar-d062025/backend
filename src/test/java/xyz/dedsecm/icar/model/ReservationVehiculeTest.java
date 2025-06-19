@@ -52,12 +52,49 @@ class ReservationVehiculeTest {
     }
 
     /**
-     * Teste la méthode toString pour s'assurer qu'elle ne retourne pas null.
+     * Teste la méthode equals et hashCode.
+     */
+    @Test
+    void testEqualsAndHashCode() {
+        ReservationVehicule r1 = new ReservationVehicule(LocalDate.of(2025, 6, 20), LocalDate.of(2025, 6, 25), 5, 10);
+        r1.setId(1);
+        ReservationVehicule r2 = new ReservationVehicule(LocalDate.of(2025, 6, 20), LocalDate.of(2025, 6, 25), 5, 10);
+        r2.setId(1);
+        assertEquals(r1, r2);
+        assertEquals(r1.hashCode(), r2.hashCode());
+        assertEquals(r1, r1);
+        assertNotEquals(r1, null);
+        assertNotEquals(r1, "string");
+        // Champs différents
+        ReservationVehicule diff = new ReservationVehicule(LocalDate.of(2025, 6, 21), LocalDate.of(2025, 6, 25), 5, 10);
+        diff.setId(1);
+        assertNotEquals(r1, diff);
+        diff = new ReservationVehicule(LocalDate.of(2025, 6, 20), LocalDate.of(2025, 6, 26), 5, 10);
+        diff.setId(1);
+        assertNotEquals(r1, diff);
+        diff = new ReservationVehicule(LocalDate.of(2025, 6, 20), LocalDate.of(2025, 6, 25), 6, 10);
+        diff.setId(1);
+        assertNotEquals(r1, diff);
+        diff = new ReservationVehicule(LocalDate.of(2025, 6, 20), LocalDate.of(2025, 6, 25), 5, 11);
+        diff.setId(1);
+        assertNotEquals(r1, diff);
+        diff = new ReservationVehicule(LocalDate.of(2025, 6, 20), LocalDate.of(2025, 6, 25), 5, 10);
+        diff.setId(2);
+        assertNotEquals(r1, diff);
+    }
+
+    /**
+     * Teste la méthode toString pour s'assurer qu'elle ne retourne pas null et qu'elle contient les bonnes informations.
      */
     @Test
     void testToString() {
-        ReservationVehicule reservation = new ReservationVehicule(LocalDate.now(), LocalDate.now().plusDays(2), 1, 2);
-        assertNotNull(reservation.toString());
+        ReservationVehicule r = new ReservationVehicule(LocalDate.of(2025, 6, 20), LocalDate.of(2025, 6, 25), 5, 10);
+        r.setId(1);
+        String str = r.toString();
+        assertTrue(str.contains("id=1"));
+        assertTrue(str.contains("dateDebut=2025-06-20"));
+        assertTrue(str.contains("dateFin=2025-06-25"));
+        assertTrue(str.contains("utilisateurId=5"));
+        assertTrue(str.contains("vehiculeId=10"));
     }
 }
-

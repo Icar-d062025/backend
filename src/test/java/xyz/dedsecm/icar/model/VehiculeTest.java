@@ -66,5 +66,29 @@ class VehiculeTest {
         Vehicule v2 = new Vehicule(5, "IJ-345-KL", "Ford", "Fiesta", "Citadine");
         assertEquals(v1.hashCode(), v2.hashCode());
     }
-}
 
+    /**
+     * Teste la méthode equals et hashCode pour vérifier toutes les branches.
+     */
+    @Test
+    void testEqualsAndHashCode() {
+        Vehicule v1 = new Vehicule(1, "AB-123-CD", "Renault", "Clio", "Citadine");
+        Vehicule v2 = new Vehicule(1, "AB-123-CD", "Renault", "Clio", "Citadine");
+        assertEquals(v1, v2);
+        assertEquals(v1.hashCode(), v2.hashCode());
+        assertEquals(v1, v1);
+        assertNotEquals(v1, null);
+        assertNotEquals(v1, "string");
+        // Champs différents
+        Vehicule diff = new Vehicule(2, "AB-123-CD", "Renault", "Clio", "Citadine");
+        assertNotEquals(v1, diff);
+        diff = new Vehicule(1, "XY-999-ZZ", "Renault", "Clio", "Citadine");
+        assertNotEquals(v1, diff);
+        diff = new Vehicule(1, "AB-123-CD", "Peugeot", "Clio", "Citadine");
+        assertNotEquals(v1, diff);
+        diff = new Vehicule(1, "AB-123-CD", "Renault", "208", "Citadine");
+        assertNotEquals(v1, diff);
+        diff = new Vehicule(1, "AB-123-CD", "Renault", "Clio", "SUV");
+        assertNotEquals(v1, diff);
+    }
+}

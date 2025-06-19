@@ -29,6 +29,8 @@ public class UserService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    private static final String USER_NOT_FOUND_ID = "Utilisateur non trouvé avec l'id: ";
+
     /**
      * Récupère la liste de tous les utilisateurs sous forme de DTO.
      * @return la liste des utilisateurs
@@ -60,7 +62,7 @@ public class UserService {
     public UserDTO getUserById(Long id) {
         return userRepository.findById(id)
                 .map(UserMapper::toDTO)
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé avec l'id: " + id));
+                .orElseThrow(() -> new RuntimeException(USER_NOT_FOUND_ID + id));
     }
 
     /**
@@ -115,7 +117,7 @@ public class UserService {
 
                     return UserMapper.toDTO(userRepository.save(user));
                 })
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé avec l'id: " + id));
+                .orElseThrow(() -> new RuntimeException(USER_NOT_FOUND_ID + id));
     }
 
     /**
@@ -142,7 +144,7 @@ public class UserService {
                     user.setDureeBanni(duree);
                     return UserMapper.toDTO(userRepository.save(user));
                 })
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé avec l'id: " + id));
+                .orElseThrow(() -> new RuntimeException(USER_NOT_FOUND_ID + id));
     }
 
     /**
@@ -159,7 +161,7 @@ public class UserService {
                     user.setDureeBanni(null);
                     return UserMapper.toDTO(userRepository.save(user));
                 })
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé avec l'id: " + id));
+                .orElseThrow(() -> new RuntimeException(USER_NOT_FOUND_ID + id));
     }
 
     /**
@@ -176,7 +178,7 @@ public class UserService {
                     user.setVehiculeId(vehicleId);
                     return UserMapper.toDTO(userRepository.save(user));
                 })
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé avec l'id: " + userId));
+                .orElseThrow(() -> new RuntimeException(USER_NOT_FOUND_ID + userId));
     }
 
     /**
