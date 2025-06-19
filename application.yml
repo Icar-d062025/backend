@@ -6,6 +6,8 @@ routing:
   nominatim:
     base-url: https://nominatim.openstreetmap.org
     timeout: 10000
+  co2:
+    factor: 0.120
 
 spring:
   cache:
