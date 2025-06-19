@@ -63,6 +63,7 @@ xyz.dedsecm.icar/
 - **Spring Security** - Authentification et autorisation
 - **Spring Data JPA** - Persistance des données
 - **H2 Database** - Base de données embarquée
+- **MariaDB** - Base de données relationnelle
 - **JWT** - Authentification par token
 - **Lombok** - Réduction de code boilerplate
 - **BCrypt** - Hachage sécurisé des mots de passe
@@ -103,9 +104,13 @@ Console H2 (dev uniquement) : http://localhost:8080/h2-console
 - `POST /api/users` - Création d'un utilisateur
 - `PUT /api/users/{id}` - Mise à jour d'un utilisateur
 - `DELETE /api/users/{id}` - Suppression d'un utilisateur
-- `POST /api/users/{id}/ban` - Bannir un utilisateur
+- `POST /api/users/{id}/ban?raison=...&duree=...` - Bannissement temporaire
 - `POST /api/users/{id}/unban` - Débannir un utilisateur
-- `POST /api/users/{userId}/assign-vehicle/{vehicleId}` - Attribuer un véhicule
+- `POST /api/users/{userId}/assign-vehicle/{vehicleId}` - Attribution d'un véhicule
+
+### Covoiturages
+- `GET /api/covoiturages` - Liste des covoiturages
+- `POST /api/covoiturages` - Création d'une offre de covoiturage
 
 ### Administration
 - `GET /api/admin/hello` - Test d'accès administrateur

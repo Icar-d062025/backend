@@ -1,18 +1,15 @@
 package xyz.dedsecm.icar.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
-@Data
+/**
+ * Représente une paire de coordonnées géographiques.
+ */
+@Getter
 @AllArgsConstructor
-@NoArgsConstructor
 public class Coordinate {
-    private double latitude;
-    private double longitude;
 
-    @Override
-    public String toString() {
-        return longitude + "," + latitude;
-    }
+    private final double latitude;
+    private final double longitude;
 }

@@ -125,6 +125,13 @@
             <artifactId>mariadb-java-client</artifactId>
             <version>3.3.3</version>
         </dependency>
+        <!-- MockWebServer pour les tests HTTP -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>mockwebserver</artifactId>
+            <version>4.10.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
