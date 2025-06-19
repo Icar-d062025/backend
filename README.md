@@ -5,11 +5,17 @@
 [![Spring Security](https://img.shields.io/badge/Spring_Security-JWT-6DB33F?logo=spring-security&logoColor=white)](https://spring.io/projects/spring-security)
 [![Spring Data JPA](https://img.shields.io/badge/Spring_Data-JPA-6DB33F?logo=spring&logoColor=white)](https://spring.io/projects/spring-data-jpa)
 [![H2 Database](https://img.shields.io/badge/H2-Database-0000FF?logo=h2-database&logoColor=white)](https://www.h2database.com/)
+[![MariaDB Database](https://img.shields.io/badge/MariaDB-11.6.2-003545?logo=mariadb&logoColor=white)](https://mariadb.org/)
+[![JUnit](https://img.shields.io/badge/JUnit-5.9.3-25A162?logo=junit5&logoColor=white)](https://junit.org/junit5/)
+[![Maven](https://img.shields.io/badge/Maven-3.8.6-C71A36?logo=apache-maven&logoColor=white)](https://maven.apache.org/)
+[![Lombok](https://img.shields.io/badge/Lombok-1.18.24-94F481?logo=lombok&logoColor=white)](https://projectlombok.org/)
+[![BCrypt](https://img.shields.io/badge/BCrypt-4.0.0-FF9800?logo=java&logoColor=white)](https://www.mindrot.org/projects/jbcrypt/)
+[![Jenkins](https://img.shields.io/badge/Jenkins-2.504.2-D24939?logo=jenkins&logoColor=white)](https://www.jenkins.io/)
 [![MIT License](https://img.shields.io/badge/Licence-MIT-red.svg)](licence)
 
 ## 📋 Description
 
-API backend pour l'application Icar, une plateforme de covoiturage moderne et intuitive. Cette API REST sécurisée gère les utilisateurs, les véhicules et les covoiturages avec une architecture robuste basée sur Spring Boot.
+API backend REST pour la plateforme Icar, offrant gestion sécurisée des utilisateurs, véhicules et covoiturages.
 
 ## 🏗️ Architecture
 
@@ -81,7 +87,7 @@ mvn clean install
 mvn spring-boot:run
 ```
 
-L'API est accessible à l'adresse : http://localhost:8080  
+L'API est accessible à l'adresse : http://localhost:8080
 Console H2 (dev uniquement) : http://localhost:8080/h2-console
 
 ## 📡 Points d'entrée API
