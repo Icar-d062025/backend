@@ -1,0 +1,14 @@
+# application.yml
+routing:
+  osrm:
+    base-url: http://router.project-osrm.org
+    timeout: 30000
+  nominatim:
+    base-url: https://nominatim.openstreetmap.org
+    timeout: 10000
+
+spring:
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=1000,expireAfterWrite=1h
