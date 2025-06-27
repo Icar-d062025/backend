@@ -3,7 +3,7 @@ package xyz.dedsecm.icar.exception;
 /**
  * Exception personnalisée pour les erreurs liées au covoiturage.
  */
-public class CovoiturageException extends RuntimeException {
+public class CovoiturageException extends IllegalArgumentException {
 
     /**
      * Construit une nouvelle exception avec un message.
