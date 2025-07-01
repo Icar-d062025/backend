@@ -71,5 +71,60 @@ class AuthControllerTest {
         String result = authController.login(loginDto);
         assertEquals("Invalid credentials", result);
     }
-}
 
+    /**
+     * Vérifie que la méthode register retourne un message de succès si l'inscription est correcte.
+     */
+    @Test
+    void register_shouldReturnSuccess_whenRegistrationIsValid() {
+        UserDTO userDto = new UserDTO();
+        userDto.setEmail("test@email.com");
+        userDto.setUsername("testuser");
+        userDto.setPassword("password");
+        userDto.setNom("Test");
+        userDto.setPrenom("User");
+
+        when(userRepository.existsByEmail("test@email.com")).thenReturn(false);
+        when(userRepository.existsByUsername("testuser")).thenReturn(false);
+        when(passwordEncoder.encode("password")).thenReturn("encodedPassword");
+
+        String result = authController.register(userDto);
+        assertEquals("Registration successful", result);
+        verify(userRepository).save(any(User.class));
+    }
+
+    /**
+     * Vérifie que la méthode register retourne une erreur si l'email existe déjà.
+     */
+    @Test
+    void register_shouldReturnError_whenEmailExists() {
+        UserDTO userDto = new UserDTO();
+        userDto.setEmail("test@email.com");
+        userDto.setUsername("testuser");
+        userDto.setPassword("password");
+
+        when(userRepository.existsByEmail("test@email.com")).thenReturn(true);
+
+        String result = authController.register(userDto);
+        assertEquals("Email already in use", result);
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    /**
+     * Vérifie que la méthode register retourne une erreur si le username existe déjà.
+     */
+    @Test
+    void register_shouldReturnError_whenUsernameExists() {
+        UserDTO userDto = new UserDTO();
+        userDto.setEmail("test@email.com");
+        userDto.setUsername("testuser");
+        userDto.setPassword("password");
+
+        when(userRepository.existsByEmail("test@email.com")).thenReturn(false);
+        when(userRepository.existsByUsername("testuser")).thenReturn(true);
+
+        String result = authController.register(userDto);
+        assertEquals("Username already in use", result);
+        verify(userRepository, never()).save(any(User.class));
+    }
+}
