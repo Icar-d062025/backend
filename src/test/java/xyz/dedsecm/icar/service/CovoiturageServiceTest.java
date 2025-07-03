@@ -3,6 +3,7 @@ package xyz.dedsecm.icar.service;
 import org.junit.jupiter.api.Test;
 import xyz.dedsecm.icar.dto.CovoiturageDTO;
 import xyz.dedsecm.icar.model.StatutCovoiturage;
+import xyz.dedsecm.icar.exception.CovoiturageException;
 
 import java.time.LocalDateTime;
 
@@ -41,7 +42,7 @@ class CovoiturageServiceTest {
                 LocalDateTime.now().plusDays(1),
                 "Paris", "Lyon", 4, 2, 450, StatutCovoiturage.EN_COURS
         );
-        Exception e = assertThrows(IllegalArgumentException.class, () -> service.validateCovoiturageDTO(dto));
+        Exception e = assertThrows(CovoiturageException.class, () -> service.validateCovoiturageDTO(dto));
         assertTrue(e.getMessage().contains("départ ne peut pas être dans le passé"));
     }
 
@@ -56,7 +57,7 @@ class CovoiturageServiceTest {
                 LocalDateTime.now().plusDays(1),
                 "Paris", "Lyon", 4, 2, 450, StatutCovoiturage.EN_COURS
         );
-        Exception e = assertThrows(IllegalArgumentException.class, () -> service.validateCovoiturageDTO(dto));
+        Exception e = assertThrows(CovoiturageException.class, () -> service.validateCovoiturageDTO(dto));
         assertTrue(e.getMessage().contains("après la date de départ"));
     }
 
@@ -71,7 +72,7 @@ class CovoiturageServiceTest {
                 LocalDateTime.now().plusDays(1).plusHours(2),
                 "Paris", "Paris", 4, 2, 450, StatutCovoiturage.EN_COURS
         );
-        Exception e = assertThrows(IllegalArgumentException.class, () -> service.validateCovoiturageDTO(dto));
+        Exception e = assertThrows(CovoiturageException.class, () -> service.validateCovoiturageDTO(dto));
         assertTrue(e.getMessage().contains("doit être différente"));
     }
 
@@ -86,7 +87,7 @@ class CovoiturageServiceTest {
                 LocalDateTime.now().plusDays(1).plusHours(2),
                 "Paris", "Lyon", -1, 0, 450, StatutCovoiturage.EN_COURS
         );
-        Exception e = assertThrows(IllegalArgumentException.class, () -> service.validateCovoiturageDTO(dto));
+        Exception e = assertThrows(CovoiturageException.class, () -> service.validateCovoiturageDTO(dto));
         assertTrue(e.getMessage().contains("nombre de places"));
     }
 }

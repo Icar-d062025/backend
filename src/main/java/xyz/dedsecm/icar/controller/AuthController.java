@@ -53,4 +53,30 @@ public class AuthController {
 
         return "Invalid credentials";
     }
+
+    /**
+     * Enregistre un nouvel utilisateur.
+     *
+     * @param userDto les informations du nouvel utilisateur
+     * @return message de succès ou d'erreur
+     */
+    @PostMapping("/register")
+    public String register(@RequestBody UserDTO userDto) {
+        if (userRepository.existsByEmail(userDto.getEmail())) {
+            return "Email already in use";
+        }
+        if (userRepository.existsByUsername(userDto.getUsername())) {
+            return "Username already in use";
+        }
+        User user = new User();
+        user.setEmail(userDto.getEmail());
+        user.setNom(userDto.getNom());
+        user.setPrenom(userDto.getPrenom());
+        user.setUsername(userDto.getUsername());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setRole(xyz.dedsecm.icar.model.Role.USER);
+        // Set other fields if needed (adresse, etc.)
+        userRepository.save(user);
+        return "Registration successful";
+    }
 }

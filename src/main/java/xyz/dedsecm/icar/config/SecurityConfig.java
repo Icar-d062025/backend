@@ -52,6 +52,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/login").permitAll()
+                        .requestMatchers("/api/auth/register").permitAll()
                         .requestMatchers("/api/users").permitAll()
                         .requestMatchers("/h2-console/**").permitAll() // Si vous utilisez la console H2
                         .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN") // Remarque : utilisation de hasAuthority au lieu de hasRole
