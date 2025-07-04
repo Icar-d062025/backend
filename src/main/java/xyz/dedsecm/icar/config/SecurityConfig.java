@@ -54,8 +54,12 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/login").permitAll()
                         .requestMatchers("/api/auth/register").permitAll()
                         .requestMatchers("/api/users").permitAll()
+                        .requestMatchers("/api/covoiturages").permitAll()
+                        .requestMatchers("/api/vs").permitAll()
+                        .requestMatchers("/api/vehicules").permitAll()
                         .requestMatchers("/h2-console/**").permitAll() // Si vous utilisez la console H2
                         .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN") // Remarque : utilisation de hasAuthority au lieu de hasRole
+                        .requestMatchers("/api/users/**").hasAuthority("ROLE_ADMIN") // Ajout : seules les admins peuvent modifier les utilisateurs
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
