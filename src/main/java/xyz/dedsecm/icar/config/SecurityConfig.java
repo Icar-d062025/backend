@@ -56,6 +56,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/api/users", "/api/users/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/users/*/ban", "/api/users/*/unban").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/users/*").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/users/*").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/users/*/assign-vehicle/*").authenticated()
                         .requestMatchers("/api/auth/login").permitAll()
                         .requestMatchers("/api/auth/register").permitAll()
                         .requestMatchers("/api/covoiturages").permitAll()
