@@ -3,6 +3,7 @@ package xyz.dedsecm.icar.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import xyz.dedsecm.icar.dto.UserDTO;
 import xyz.dedsecm.icar.service.UserService;
@@ -88,6 +89,7 @@ public class UserController {
      * @return une réponse HTTP contenant le DTO de l'utilisateur mis à jour
      */
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or @userSecurity.isOwner(authentication, #id)")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
         return ResponseEntity.ok(userService.updateUser(id, userDTO));
     }
@@ -99,6 +101,7 @@ public class UserController {
      */
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or @userSecurity.isOwner(authentication, #id)")
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
     }
@@ -112,6 +115,7 @@ public class UserController {
      * @return une réponse HTTP contenant le DTO de l'utilisateur banni
      */
     @PostMapping("/{id}/ban")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<UserDTO> banUser(
             @PathVariable Long id,
             @RequestParam String raison,
@@ -126,6 +130,7 @@ public class UserController {
      * @return une réponse HTTP contenant le DTO de l'utilisateur débanni
      */
     @PostMapping("/{id}/unban")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<UserDTO> unbanUser(@PathVariable Long id) {
         return ResponseEntity.ok(userService.unbanUser(id));
     }
@@ -138,6 +143,7 @@ public class UserController {
      * @return une réponse HTTP contenant le DTO de l'utilisateur avec le véhicule attribué
      */
     @PostMapping("/{userId}/assign-vehicle/{vehicleId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or @userSecurity.isOwner(authentication, #userId)")
     public ResponseEntity<UserDTO> assignVehicle(
             @PathVariable Long userId,
             @PathVariable Long vehicleId) {

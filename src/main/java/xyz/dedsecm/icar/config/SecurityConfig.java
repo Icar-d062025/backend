@@ -2,6 +2,8 @@ package xyz.dedsecm.icar.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -38,6 +40,7 @@ import java.util.UUID;
  */
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     /**
@@ -51,9 +54,17 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.GET, "/api/users", "/api/users/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/users/*/ban", "/api/users/*/unban").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/users/*").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/users/*").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/users/*/assign-vehicle/*").authenticated()
                         .requestMatchers("/api/auth/login").permitAll()
                         .requestMatchers("/api/auth/register").permitAll()
-                        .requestMatchers("/api/users").permitAll()
+                        .requestMatchers("/api/covoiturages").permitAll()
+                        .requestMatchers("/api/vs").permitAll()
+                        .requestMatchers("/api/vehicules").permitAll()
                         .requestMatchers("/h2-console/**").permitAll() // Si vous utilisez la console H2
                         .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN") // Remarque : utilisation de hasAuthority au lieu de hasRole
                         .anyRequest().authenticated())
