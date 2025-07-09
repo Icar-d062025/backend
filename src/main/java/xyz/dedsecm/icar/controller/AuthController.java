@@ -44,11 +44,11 @@ public class AuthController {
     @PostMapping("/login")
     public String login(@RequestBody UserDTO loginDto) {
         User user = userRepository.findAll().stream()
-                .filter(u -> u.getUsername().equals(loginDto.getUsername()))
+                .filter(u -> u.getUsername() != null && u.getUsername().equals(loginDto.getUsername()))
                 .findFirst().orElse(null);
 
         if (user != null && passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
-            return tokenService.generateToken(user.getUsername(), user.getRole().name());
+            return tokenService.generateToken(user.getUsername(), user.getRole().name(), user.getId());
         }
 
         return "Invalid credentials";

@@ -51,7 +51,7 @@ public class TokenService {
      * @param role le rôle de l'utilisateur
      * @return le token JWT signé sous forme de chaîne
      */
-    public String generateToken(String username, String role) {
+    public String generateToken(String username, String role, Long userId) {
         Instant now = Instant.now();
 
         // Format correct pour les rôles dans le JWT
@@ -63,6 +63,7 @@ public class TokenService {
                 .expiresAt(now.plus(expirationInSeconds, ChronoUnit.SECONDS))
                 .subject(username)
                 .claim("authorities", Collections.singletonList(formattedRole))  // Changé de "scope" à "authorities" et utilisation d'une liste
+                .claim("userId", userId)
                 .build();
 
         return encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();

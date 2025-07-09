@@ -42,7 +42,7 @@ class TokenServiceTest {
         when(encoder.encode(any(JwtEncoderParameters.class))).thenReturn(jwt);
         when(jwt.getTokenValue()).thenReturn("fake-jwt-token");
 
-        String token = tokenService.generateToken("user", "USER");
+        String token = tokenService.generateToken("user", "USER", 1L);
         assertEquals("fake-jwt-token", token);
 
         ArgumentCaptor<JwtEncoderParameters> captor = ArgumentCaptor.forClass(JwtEncoderParameters.class);
@@ -50,6 +50,7 @@ class TokenServiceTest {
         JwtClaimsSet claims = captor.getValue().getClaims();
         assertEquals("user", claims.getSubject());
         assertTrue(((List<?>) claims.getClaim("authorities")).contains("ROLE_USER"));
+        assertEquals(1L, (Long) claims.getClaim("userId"));
         assertNotNull(claims.getIssuedAt());
         assertNotNull(claims.getExpiresAt());
     }
@@ -63,7 +64,7 @@ class TokenServiceTest {
         when(encoder.encode(any(JwtEncoderParameters.class))).thenReturn(jwt);
         when(jwt.getTokenValue()).thenReturn("jwt-prefixed");
 
-        String token = tokenService.generateToken("admin", "ROLE_ADMIN");
+        String token = tokenService.generateToken("admin", "ROLE_ADMIN", 2L);
         assertEquals("jwt-prefixed", token);
 
         ArgumentCaptor<JwtEncoderParameters> captor = ArgumentCaptor.forClass(JwtEncoderParameters.class);
@@ -71,6 +72,6 @@ class TokenServiceTest {
         JwtClaimsSet claims = captor.getValue().getClaims();
         assertEquals("admin", claims.getSubject());
         assertTrue(((List<?>) claims.getClaim("authorities")).contains("ROLE_ADMIN"));
+        assertEquals(2L, (Long) claims.getClaim("userId"));
     }
 }
-

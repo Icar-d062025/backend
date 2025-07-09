@@ -51,7 +51,7 @@ class AuthControllerTest {
 
         when(userRepository.findAll()).thenReturn(List.of(user));
         when(passwordEncoder.matches("password", "encodedPassword")).thenReturn(true);
-        when(tokenService.generateToken("testuser", "USER")).thenReturn("jwt-token");
+        when(tokenService.generateToken("testuser", "USER", null)).thenReturn("jwt-token");
 
         String result = authController.login(loginDto);
         assertEquals("jwt-token", result);
